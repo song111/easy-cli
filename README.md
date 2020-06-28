@@ -1,0 +1,2 @@
+# easy-cli
+react cli 
