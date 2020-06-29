@@ -1,0 +1,38 @@
+{
+  "name": "@chrissong/cli-webpack",
+  "version": "0.0.1",
+  "description": "react cli ",
+  "main": "index.js",
+  "scripts": {
+    "dev": "babel src --out-dir ./lib --watch --source-maps",
+    "build": "npm run lint && npm run clean && babel src --out-dir ./lib",
+    "clean": "rimraf lib",
+    "lint": "eslint src --ext .js --fix"
+  },
+  "keywords": [
+    "react",
+    "cli"
+  ],
+  "author": "chrissong",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.10.3",
+    "@babel/core": "^7.10.3",
+    "@babel/plugin-transform-modules-commonjs": "^7.10.1",
+    "@babel/plugin-transform-runtime": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.3.1",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.10.3",
+    "which": "^2.0.2",
+    "yargs": "^15.3.1"
+  }
+}

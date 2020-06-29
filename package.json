@@ -1,0 +1,11 @@
+{
+  "name": "root",
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "dev": "lerna run dev --parallel",
+    "build": "lerna run build"
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  }
+}
