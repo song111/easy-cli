@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "react cli ",
   "main": "bin/easy.js",
+  "files": [
+    "bin",
+    "lib"
+  ],
   "scripts": {
     "dev": "babel src --out-dir ./lib --watch --source-maps",
     "build": "npm run lint && npm run clean && babel src --out-dir ./lib",
@@ -33,6 +37,8 @@
   "dependencies": {
     "@babel/runtime": "^7.10.3",
     "fkill": "^7.0.1",
+    "inquire": "^0.4.8",
+    "inquirer": "^7.2.0",
     "which": "^2.0.2",
     "yargs": "^15.3.1"
   }

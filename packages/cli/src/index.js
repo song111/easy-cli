@@ -2,22 +2,36 @@ import path from 'path';
 import fs from 'fs';
 import yargs from 'yargs';
 import { logger, findRoot, chalk } from '@chrissong/cli-utils';
+import init from './init';
 
 export default class Cli {
   constructor(cwd, argv = []) {
     this.cwd = cwd;
     this.argv = argv;
-    this.env = this.getEnv();
-    this.root = findRoot(cwd);
-    this.pkg = this.resolvePackages();
+    this.plugins = [init];
     this.commands = {}; // 命令集合
+    this.init();
   }
+
+  // 初始化
+  init() {
+    this.root = findRoot(this.cwd);
+    this.env = this.getEnv();
+    this.pkg = this.resolvePackages();
+    this.plugins.forEach((plugin) => this.use(plugin));
+  }
+
+  /**
+   * 版本信息
+   */
 
   get version() {
     return this.pkg.version;
   }
 
-  // 获取当前环境变量
+  /**
+   * 获取当前环境的环境变量
+   */
   getEnv() {
     debugger;
     return Object.keys(process.env).reduce((env, key) => {
@@ -26,7 +40,18 @@ export default class Cli {
     }, {});
   }
 
-  // 获取 package.json
+  /**
+   * 使用插件 注入cli 实例
+   * @param {Function} plugin
+   */
+
+  use(plugin) {
+    plugin(this);
+  }
+
+  /**
+   * 获取package.json信息
+   */
   resolvePackages() {
     const pkg = path.resolve(this.root, 'package.json');
     if (!fs.existsSync(pkg)) return {};
@@ -54,8 +79,8 @@ export default class Cli {
 
     if (!desc) throw new Error('命令描述 desc 不存在');
     if (this.commands[name]) throw new Error(`命令 ${chalk.redBright(name)} 已经被占用`);
-    this.commands[name] = args;
-    yargs.command(...args);
+    this.commands[name] = { cmd, desc, ...args };
+    yargs.command(cmd, desc, ...args);
   }
 
   /**
