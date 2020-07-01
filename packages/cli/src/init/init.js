@@ -3,13 +3,19 @@ import inquirer from 'inquirer';
 import which from 'which';
 import { fs, chalk } from '@chrissong/cli-utils';
 import cloneTemplate from './cloneTemplate';
+import generateProject from './generateProject';
 import { getTemplateQues, getTemplateBranchByParams, templateRepo } from './selectTemplate';
 
+/**
+ * 项目初始化
+ * @param{object} cli   cli实例对象
+ * @param{object} argv  命令行参数
+ */
 async function init(cli, argv) {
-  const projectName = path.resolve(cli.cwd, argv.name);
+  const targetDir = path.resolve(cli.cwd, argv.name);
 
   // 项目重复验证
-  if (fs.existsSync(projectName)) {
+  if (fs.existsSync(targetDir)) {
     const { isOverWrite } = await inquirer.prompt([
       {
         name: 'isOverWrite',
@@ -27,10 +33,15 @@ async function init(cli, argv) {
   // 创建本地文件模板
   const templateParams = await getTemplateQues();
   const templateBranch = getTemplateBranchByParams(templateParams);
-  const tmpdirProject = await cloneTemplate(templateRepo, templateBranch);
+  const projectTmpdir = await cloneTemplate(templateRepo, templateBranch); //  模版临时文件地址
+  // 生成项目
+  await generateProject(projectTmpdir, argv.name, targetDir);
 
-  debugger;
-  console.log(templateParams, templateBranch, tmpdirProject);
+  const pkgManager =
+    templateParams.pkgManager === 'yarn' ? (which.sync('yarn', { nothrow: true }) ? 'yarn' : 'npm') : 'npm';
+  await install(pkgManager, targetDir);
+
+  console.log(templateParams, templateBranch, projectTmpdir);
 }
 
 export default init;

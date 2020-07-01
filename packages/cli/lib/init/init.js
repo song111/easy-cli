@@ -17,13 +17,20 @@ var _cliUtils = require("@chrissong/cli-utils");
 
 var _cloneTemplate = _interopRequireDefault(require("./cloneTemplate"));
 
+var _generateProject = _interopRequireDefault(require("./generateProject"));
+
 var _selectTemplate = require("./selectTemplate");
 
+/**
+ * 项目初始化
+ * @param{object} cli   cli实例对象
+ * @param{object} argv  命令行参数
+ */
 async function init(cli, argv) {
-  const projectName = _path.default.resolve(cli.cwd, argv.name); // 项目重复验证
+  const targetDir = _path.default.resolve(cli.cwd, argv.name); // 项目重复验证
 
 
-  if (_cliUtils.fs.existsSync(projectName)) {
+  if (_cliUtils.fs.existsSync(targetDir)) {
     const {
       isOverWrite
     } = await _inquirer.default.prompt([{
@@ -42,9 +49,15 @@ async function init(cli, argv) {
 
   const templateParams = await (0, _selectTemplate.getTemplateQues)();
   const templateBranch = (0, _selectTemplate.getTemplateBranchByParams)(templateParams);
-  const tmpdirProject = await (0, _cloneTemplate.default)(_selectTemplate.templateRepo, templateBranch);
-  debugger;
-  console.log(templateParams, templateBranch, tmpdirProject);
+  const projectTmpdir = await (0, _cloneTemplate.default)(_selectTemplate.templateRepo, templateBranch); //  模版临时文件地址
+  // 生成项目
+
+  await (0, _generateProject.default)(projectTmpdir, argv.name, targetDir);
+  const pkgManager = templateParams.pkgManager === 'yarn' ? _which.default.sync('yarn', {
+    nothrow: true
+  }) ? 'yarn' : 'npm' : 'npm';
+  await install(pkgManager, targetDir);
+  console.log(templateParams, templateBranch, projectTmpdir);
 }
 
 var _default = init;

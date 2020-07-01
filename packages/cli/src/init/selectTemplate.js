@@ -12,8 +12,9 @@ export const templateBranch = {
   'base-mobx-ts': 'base-mobx-ts'
 };
 
+// 获取输入参数
 export const getTemplateQues = async () => {
-  const { isHasState, isHasTs } = await inquirer.prompt([
+  const answers = await inquirer.prompt([
     {
       name: 'isHasTs',
       message: '是否引入Typescript？',
@@ -23,22 +24,33 @@ export const getTemplateQues = async () => {
       name: 'isHasState',
       message: '是否使用状态管理容器？',
       type: 'confirm'
+    },
+    {
+      name: 'stateType',
+      when: (answers) => {
+        return answers.isHasState;
+      },
+      message: '请选择状态管理插件',
+      type: 'list',
+      choices: ['redux', 'mobx']
+    },
+    {
+      name: 'pkgManager',
+      message: '选择安装包管理',
+      type: 'list',
+      choices: ['yarn', 'npm']
     }
   ]);
-  if (isHasState) {
-    const { stateType } = await inquirer.prompt([
-      {
-        name: 'stateType',
-        message: '请选择状态管理插件',
-        type: 'list',
-        choices: ['redux', 'mobx']
-      }
-    ]);
-    return { isHasState, isHasTs, stateType };
-  }
 
-  return { isHasState, isHasTs };
+  return answers;
 };
+
+/** 获取模版分支
+ * @param{object} params
+ *   @param{boolean}  isHasTs 是否用typescript
+ *   @param{boolean}  isHasState   是否用状态管理器
+ *   @param{string}   stateType     状态管理器
+ * */
 
 export const getTemplateBranchByParams = (params) => {
   const { isHasTs, isHasState, stateType } = params;

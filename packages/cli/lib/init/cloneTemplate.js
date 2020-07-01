@@ -15,25 +15,32 @@ var _gitClone = _interopRequireDefault(require("git-clone"));
 
 var _cliUtils = require("@chrissong/cli-utils");
 
-var _default = async (repo, branch) => {
-  _cliUtils.spinner.start('✨', `克隆模板 ${_cliUtils.chalk.yellow(`${repo}(${branch})`)}...`);
+/**克隆模版到临时文件夹
+ * @param{string} repo      git地址
+ * @param{string} branchName    分支名称
+ * */
+var _default = async (repo, branchName) => {
+  _cliUtils.spinner.start('✨', `克隆模板 ${_cliUtils.chalk.yellow(`${repo}(${branchName})`)}...`);
 
   const tmpdir = _path.default.join(_os.default.tmpdir(), 'easy');
 
   await _cliUtils.fs.remove(tmpdir);
+  debugger;
   return new Promise((resolve, reject) => {
-    debugger;
     (0, _gitClone.default)(repo, tmpdir, {
-      shallow: true,
-      checkout: branch
+      checkout: branchName
     }, err => {
       _cliUtils.spinner.stop();
 
-      if (!err) return resolve(tmpdir);
+      if (!err) {
+        _cliUtils.logger.done(`克隆模板 ${`${repo}(${branchName})`} 成功`);
 
-      _cliUtils.logger.error(`克隆模板 ${`${repo}(${branch})`} 失败`);
+        return resolve(tmpdir);
+      } else {
+        _cliUtils.logger.error(`克隆模板 ${`${repo}(${branchName})`} 失败`);
 
-      reject(err);
+        return reject(err);
+      }
     });
   });
 };

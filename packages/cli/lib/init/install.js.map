@@ -1,1 +1,1 @@
-{"version":3,"sources":[],"names":[],"mappings":"","sourcesContent":[],"file":"install.js"}
+{"version":3,"sources":["../../src/init/install.js"],"names":["pkgManager","targetDir","spinner","start"],"mappings":";;;;;;;AAAA;;AAEA;;;;;eAKe,OAAOA,UAAP,EAAmBC,SAAnB,KAAiC;AAC5CC,oBAAQC,KAAR;AACH,C","sourcesContent":["import {spinner } from '@chrissong/cli-utils'\n\n/**\n * 安装依赖\n * @param{string} pkgManager yarn|npm\n * @param{string} targetDir  项目路径\n */\nexport default async (pkgManager, targetDir) => {\n    spinner.start()\n};\n"],"file":"install.js"}
