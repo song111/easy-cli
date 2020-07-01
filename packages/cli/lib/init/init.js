@@ -15,11 +15,15 @@ var _which = _interopRequireDefault(require("which"));
 
 var _cliUtils = require("@chrissong/cli-utils");
 
+var _cloneTemplate = _interopRequireDefault(require("./cloneTemplate"));
+
+var _selectTemplate = require("./selectTemplate");
+
 async function init(cli, argv) {
   const projectName = _path.default.resolve(cli.cwd, argv.name); // 项目重复验证
 
 
-  if (_cliUtils.fs.existSync(projectName)) {
+  if (_cliUtils.fs.existsSync(projectName)) {
     const {
       isOverWrite
     } = await _inquirer.default.prompt([{
@@ -35,6 +39,12 @@ async function init(cli, argv) {
     }
   } // 创建本地文件模板
 
+
+  const templateParams = await (0, _selectTemplate.getTemplateQues)();
+  const templateBranch = (0, _selectTemplate.getTemplateBranchByParams)(templateParams);
+  const tmpdirProject = await (0, _cloneTemplate.default)(_selectTemplate.templateRepo, templateBranch);
+  debugger;
+  console.log(templateParams, templateBranch, tmpdirProject);
 }
 
 var _default = init;

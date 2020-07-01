@@ -33,7 +33,6 @@ export default class Cli {
    * 获取当前环境的环境变量
    */
   getEnv() {
-    debugger;
     return Object.keys(process.env).reduce((env, key) => {
       env[key] = process.env[key];
       return env;

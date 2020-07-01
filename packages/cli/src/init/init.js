@@ -2,12 +2,14 @@ import path from 'path';
 import inquirer from 'inquirer';
 import which from 'which';
 import { fs, chalk } from '@chrissong/cli-utils';
+import cloneTemplate from './cloneTemplate';
+import { getTemplateQues, getTemplateBranchByParams, templateRepo } from './selectTemplate';
 
 async function init(cli, argv) {
   const projectName = path.resolve(cli.cwd, argv.name);
 
   // 项目重复验证
-  if (fs.existSync(projectName)) {
+  if (fs.existsSync(projectName)) {
     const { isOverWrite } = await inquirer.prompt([
       {
         name: 'isOverWrite',
@@ -23,6 +25,12 @@ async function init(cli, argv) {
   }
 
   // 创建本地文件模板
+  const templateParams = await getTemplateQues();
+  const templateBranch = getTemplateBranchByParams(templateParams);
+  const tmpdirProject = await cloneTemplate(templateRepo, templateBranch);
+
+  debugger;
+  console.log(templateParams, templateBranch, tmpdirProject);
 }
 
 export default init;

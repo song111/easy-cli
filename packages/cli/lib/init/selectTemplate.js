@@ -69,11 +69,11 @@ const getTemplateBranchByParams = params => {
   } = params;
 
   if (isHasTs) {
-    return isHasState ? templateBranch(`base-${stateType}-ts`) : templateBranch(`base-ts`);
+    return isHasState ? templateBranch[`base-${stateType}-ts`] : templateBranch[`base-ts`];
   } else {
-    return isHasState ? templateBranch(`base-${stateType}`) : templateBranch(`base`);
+    return isHasState ? templateBranch[`base-${stateType}`] : templateBranch[`base`];
   }
 };
 
 exports.getTemplateBranchByParams = getTemplateBranchByParams;
-//# sourceMappingURL=question.js.map
+//# sourceMappingURL=selectTemplate.js.map

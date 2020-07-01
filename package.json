@@ -9,5 +9,9 @@
   },
   "devDependencies": {
     "lerna": "^3.22.1"
+  },
+  "dependencies": {
+    "git-clone": "^0.1.0",
+    "os": "^0.1.1"
   }
 }

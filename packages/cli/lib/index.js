@@ -54,7 +54,6 @@ class Cli {
 
 
   getEnv() {
-    debugger;
     return Object.keys(process.env).reduce((env, key) => {
       env[key] = process.env[key];
       return env;
