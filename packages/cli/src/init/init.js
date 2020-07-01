@@ -4,7 +4,6 @@ import which from 'which';
 import { fs, chalk } from '@chrissong/cli-utils';
 
 async function init(cli, argv) {
-
   const projectName = path.resolve(cli.cwd, argv.name);
 
   // 项目重复验证
@@ -22,6 +21,8 @@ async function init(cli, argv) {
       await fs.remove(targetDir);
     }
   }
+
+  // 创建本地文件模板
 }
 
 export default init;

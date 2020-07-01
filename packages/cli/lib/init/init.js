@@ -33,7 +33,8 @@ async function init(cli, argv) {
       logger.log(`\n删除目录 ${_cliUtils.chalk.cyan(targetDir)}...`);
       await _cliUtils.fs.remove(targetDir);
     }
-  }
+  } // 创建本地文件模板
+
 }
 
 var _default = init;
