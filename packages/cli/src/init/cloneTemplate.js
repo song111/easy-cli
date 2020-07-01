@@ -12,7 +12,6 @@ export default async (repo, branchName) => {
   spinner.start('✨', `克隆模板 ${chalk.yellow(`${repo}(${branchName})`)}...`);
   const tmpdir = path.join(os.tmpdir(), 'easy');
   await fs.remove(tmpdir);
-  debugger;
   return new Promise((resolve, reject) => {
     gitclone(repo, tmpdir, { checkout: branchName }, (err) => {
       spinner.stop();

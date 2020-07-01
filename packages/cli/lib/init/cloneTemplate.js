@@ -25,7 +25,6 @@ var _default = async (repo, branchName) => {
   const tmpdir = _path.default.join(_os.default.tmpdir(), 'easy');
 
   await _cliUtils.fs.remove(tmpdir);
-  debugger;
   return new Promise((resolve, reject) => {
     (0, _gitClone.default)(repo, tmpdir, {
       checkout: branchName

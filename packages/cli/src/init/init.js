@@ -1,9 +1,10 @@
 import path from 'path';
 import inquirer from 'inquirer';
 import which from 'which';
-import { fs, chalk } from '@chrissong/cli-utils';
+import { fs, chalk, logger } from '@chrissong/cli-utils';
 import cloneTemplate from './cloneTemplate';
 import generateProject from './generateProject';
+import install from './install';
 import { getTemplateQues, getTemplateBranchByParams, templateRepo } from './selectTemplate';
 
 /**

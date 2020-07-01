@@ -19,6 +19,8 @@ var _cloneTemplate = _interopRequireDefault(require("./cloneTemplate"));
 
 var _generateProject = _interopRequireDefault(require("./generateProject"));
 
+var _install = _interopRequireDefault(require("./install"));
+
 var _selectTemplate = require("./selectTemplate");
 
 /**
@@ -41,7 +43,8 @@ async function init(cli, argv) {
     }]);
 
     if (isOverWrite) {
-      logger.log(`\n删除目录 ${_cliUtils.chalk.cyan(targetDir)}...`);
+      _cliUtils.logger.log(`\n删除目录 ${_cliUtils.chalk.cyan(targetDir)}...`);
+
       await _cliUtils.fs.remove(targetDir);
     }
   } // 创建本地文件模板
@@ -56,7 +59,7 @@ async function init(cli, argv) {
   const pkgManager = templateParams.pkgManager === 'yarn' ? _which.default.sync('yarn', {
     nothrow: true
   }) ? 'yarn' : 'npm' : 'npm';
-  await install(pkgManager, targetDir);
+  await (0, _install.default)(pkgManager, targetDir);
   console.log(templateParams, templateBranch, projectTmpdir);
 }
 

@@ -3,7 +3,6 @@ export default (cli) => {
     'init <name>',
     '初始化项目',
     (yargs) => {
-      debugger;
       yargs.positional('name', {
         type: 'string',
         describe: '项目名称'
