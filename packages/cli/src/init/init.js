@@ -12,7 +12,7 @@ import { getTemplateQues, getTemplateBranchByParams, templateRepo } from './sele
  * @param{object} cli   cli实例对象
  * @param{object} argv  命令行参数
  */
-async function init (cli, argv) {
+async function init(cli, argv) {
   const targetDir = path.resolve(cli.cwd, argv.name);
 
   // 项目名称校验
@@ -42,9 +42,9 @@ async function init (cli, argv) {
 
   const pkgManager =
     templateParams.pkgManager === 'yarn' ? (which.sync('yarn', { nothrow: true }) ? 'yarn' : 'npm') : 'npm';
-  await install(pkgManager, targetDir);
 
-  console.log(templateParams, templateBranch, projectTmpdir);
+  // 安装依赖
+  await install(pkgManager, targetDir);
 }
 
 export default init;

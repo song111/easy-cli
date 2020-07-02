@@ -1,5 +1,6 @@
 import path from 'path';
-import { fs, findRoot } from '@chrissong/cli-utils';
+import fs from 'fs';
+import findRoot from './findRoot';
 
 const getEasyConfig = (cwd) => {
   const root = findRoot(cwd || process.cwd()) || process.cwd();

@@ -19,10 +19,11 @@ const server = () => {
     argv: process.argv.slice(2),
     context: process.cwd(),
     easyConfig: (0, _cliUtils.getEasyConfig)(process.cwd())
-  }); //   .catch((err) => {
-  //     logger.log(err);
-  //     process.send('EXIT_WITH_ERROR');
-  //   });
+  }).catch(err => {
+    _cliUtils.logger.log(err);
+
+    process.send('EXIT_WITH_ERROR');
+  });
 };
 
 server();

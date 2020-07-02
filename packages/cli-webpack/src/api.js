@@ -14,7 +14,7 @@ export default class API {
    * }
    * @param {Boolean} inspect 是否为inspect模式
    */
-  constructor (mode, options, inspect) {
+  constructor(mode, options, inspect) {
     this.mode = mode;
     this.inspect = inspect;
     this.options = this.formatOptions(options);
@@ -25,14 +25,14 @@ export default class API {
   /**
    * 环境变量
    */
-  get env () {
+  get env() {
     return this.options.env;
   }
 
   /**
    * 命令行参数
    */
-  get argv () {
+  get argv() {
     const argv = this.options.argv;
     return {
       ...argv,
@@ -46,14 +46,14 @@ export default class API {
   /**
    * easyConfig配置文件对象
    */
-  get easyConfig () {
+  get easyConfig() {
     return this.options.easyConfig;
   }
 
   /**
    * 当前程序执行路径
    */
-  get context () {
+  get context() {
     return this.options.context;
   }
 
@@ -61,7 +61,7 @@ export default class API {
    * resolve路径
    * @param {String} dir
    */
-  resolve (dir) {
+  resolve(dir) {
     return path.resolve(this.context, dir);
   }
 
@@ -69,7 +69,7 @@ export default class API {
    * 格式化options参数
    * @param {Object} options
    */
-  formatOptions (options) {
+  formatOptions(options) {
     const { baseURL = '', chainWebpack, ...easyConfig } = options;
     return {
       ...options,
@@ -87,7 +87,7 @@ export default class API {
   /**
    * 获取package.json信息
    */
-  resolvePackage () {
+  resolvePackage() {
     const pkg = this.resolve('package.json');
     if (fs.existsSync(pkg)) {
       try {
@@ -103,8 +103,8 @@ export default class API {
   /**
    * 读取package.json中的插件
    */
-  resolvePlugins () {
-    const plugins = ['./webpack.config', './webpack.config.dev', './webpack.config.prod'];
+  resolvePlugins() {
+    const plugins = ['./config/base', './config/dev', './config/prod'];
     return plugins.map((id) => {
       try {
         return require(id);
@@ -118,11 +118,11 @@ export default class API {
   /**
    * 获取webpack config
    */
-  async resolveWebpackConfig () {
+  async resolveWebpackConfig() {
     const config = new WebpackChain();
     const { chainWebpack } = this.easyConfig;
     // 生成webpack配置
-    await parallelToSerial(this.plugins.map((plugin) => plugin(this.use(config))));
+    await parallelToSerial(this.plugins.map((plugin) => this.use(config)(plugin.default)));
 
     return chainWebpack(config).toConfig(); // 加载配置项的webpack 配置
   }
@@ -131,7 +131,7 @@ export default class API {
    * 注册执行插件
    * @param {WebpackChain} config
    */
-  use (config) {
+  use(config) {
     return (plugin) => {
       const api = {
         env: this.env,
@@ -144,6 +144,7 @@ export default class API {
         resolve: (dir) => this.resolve(dir),
         chainWebpack: (callback) => callback(config)
       };
+      debugger;
       return () => plugin(api);
     };
   }

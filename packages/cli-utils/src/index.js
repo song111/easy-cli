@@ -12,6 +12,7 @@ import loadEnv from './loadEnv';
 import getEasyConfig from './getEasyConfig';
 import parallelToSerial from './parallelToSerial';
 import getIPv4URL from './getIPv4URL';
+import formatProxy from './formatProxy';
 
 export {
   logger,
@@ -26,5 +27,6 @@ export {
   parallelToSerial,
   open,
   detectPort,
-  getIPv4URL
+  getIPv4URL,
+  formatProxy
 };

@@ -59,9 +59,9 @@ async function init(cli, argv) {
   await (0, _generateProject.default)(projectTmpdir, argv.name, targetDir);
   const pkgManager = templateParams.pkgManager === 'yarn' ? _which.default.sync('yarn', {
     nothrow: true
-  }) ? 'yarn' : 'npm' : 'npm';
+  }) ? 'yarn' : 'npm' : 'npm'; // 安装依赖
+
   await (0, _install.default)(pkgManager, targetDir);
-  console.log(templateParams, templateBranch, projectTmpdir);
 }
 
 var _default = init;

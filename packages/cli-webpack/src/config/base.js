@@ -13,7 +13,7 @@ export default (api) => {
     const { alias, pages = {} } = api.easyConfig;
 
     // 设置context
-    webpackConfig.context(api.context()).target('web');
+    webpackConfig.context(api.context).target('web');
 
     // output配置
     webpackConfig.output.path(api.resolve('dist')).publicPath('./');

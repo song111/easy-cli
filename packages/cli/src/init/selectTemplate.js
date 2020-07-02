@@ -1,5 +1,5 @@
+/* eslint-disable dot-notation */
 import inquirer from 'inquirer';
-import _ from 'lodash';
 
 export const templateRepo = 'https://github.com/song111/easy-template.git';
 
@@ -36,7 +36,7 @@ export const getTemplateQues = async () => {
     },
     {
       name: 'pkgManager',
-      message: '选择安装包管理',
+      message: '选择安装包管理器',
       type: 'list',
       choices: ['yarn', 'npm']
     }
@@ -55,8 +55,8 @@ export const getTemplateQues = async () => {
 export const getTemplateBranchByParams = (params) => {
   const { isHasTs, isHasState, stateType } = params;
   if (isHasTs) {
-    return isHasState ? templateBranch[`base-${stateType}-ts`] : templateBranch[`base-ts`];
+    return isHasState ? templateBranch[`base-${stateType}-ts`] : templateBranch['base-ts'];
   } else {
-    return isHasState ? templateBranch[`base-${stateType}`] : templateBranch[`base`];
+    return isHasState ? templateBranch[`base-${stateType}`] : templateBranch['base'];
   }
 };

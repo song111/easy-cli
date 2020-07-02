@@ -9,8 +9,7 @@ exports.getTemplateBranchByParams = exports.getTemplateQues = exports.templateBr
 
 var _inquirer = _interopRequireDefault(require("inquirer"));
 
-var _lodash = _interopRequireDefault(require("lodash"));
-
+/* eslint-disable dot-notation */
 const templateRepo = 'https://github.com/song111/easy-template.git';
 exports.templateRepo = templateRepo;
 const templateBranch = {
@@ -43,7 +42,7 @@ const getTemplateQues = async () => {
     choices: ['redux', 'mobx']
   }, {
     name: 'pkgManager',
-    message: '选择安装包管理',
+    message: '选择安装包管理器',
     type: 'list',
     choices: ['yarn', 'npm']
   }]);
@@ -67,9 +66,9 @@ const getTemplateBranchByParams = params => {
   } = params;
 
   if (isHasTs) {
-    return isHasState ? templateBranch[`base-${stateType}-ts`] : templateBranch[`base-ts`];
+    return isHasState ? templateBranch[`base-${stateType}-ts`] : templateBranch['base-ts'];
   } else {
-    return isHasState ? templateBranch[`base-${stateType}`] : templateBranch[`base`];
+    return isHasState ? templateBranch[`base-${stateType}`] : templateBranch['base'];
   }
 };
 
