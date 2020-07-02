@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.3",
+    "chokidar": "^3.4.0",
     "fkill": "^7.0.1",
     "git-clone": "^0.1.0",
     "inquirer": "^7.2.0",

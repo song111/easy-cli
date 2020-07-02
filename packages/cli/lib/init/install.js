@@ -18,12 +18,10 @@ var _readline = _interopRequireDefault(require("readline"));
  */
 var _default = async (pkgManager, targetDir) => {
   const args = pkgManager === 'npm' ? ['install', '--loglevel', 'error'] : ['install'];
-  debugger;
   const cmd = `${pkgManager} ${args.join(' ')}`;
 
   _cliUtils.logger.log(`🚀  安装项目依赖 ${_cliUtils.chalk.cyan(cmd)}，请稍等...`);
 
-  debugger;
   return new Promise((resolve, reject) => {
     const child = (0, _cliUtils.execa)(pkgManager, args, {
       cwd: targetDir,
@@ -49,6 +47,7 @@ var _default = async (pkgManager, targetDir) => {
 
     child.on('close', code => {
       if (code !== 0) {
+        // eslint-disable-next-line prefer-promise-reject-errors
         reject(`pkgManager failed: ${pkgManager} ${args.join(' ')}`);
         return;
       }
@@ -67,8 +66,8 @@ function renderProgressBar(curr, total) {
   const availableSpace = Math.max(0, process.stderr.columns - bar.length - 3);
   const width = Math.min(total, availableSpace);
   const completeLength = Math.round(width * ratio);
-  const complete = `#`.repeat(completeLength);
-  const incomplete = `-`.repeat(width - completeLength);
+  const complete = '#'.repeat(completeLength);
+  const incomplete = '-'.repeat(width - completeLength);
   toStartOfLine(process.stderr);
   process.stderr.write(`[${complete}${incomplete}]${bar}`);
 }

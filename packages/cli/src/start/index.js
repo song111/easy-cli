@@ -1,5 +1,3 @@
-import { argv } from 'yargs';
-
 export default (cli) => {
   cli.register(
     'start',
@@ -20,6 +18,8 @@ export default (cli) => {
           describe: '指定 devServer 端口号'
         });
     },
-    (argv) => {}
+    (argv) => {
+      require('./start.js')(cli, argv);
+    }
   );
 };

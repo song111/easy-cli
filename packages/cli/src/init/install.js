@@ -8,11 +8,9 @@ import readline from 'readline';
  */
 export default async (pkgManager, targetDir) => {
   const args = pkgManager === 'npm' ? ['install', '--loglevel', 'error'] : ['install'];
-  debugger;
   const cmd = `${pkgManager} ${args.join(' ')}`;
   logger.log(`🚀  安装项目依赖 ${chalk.cyan(cmd)}，请稍等...`);
 
-  debugger;
   return new Promise((resolve, reject) => {
     const child = execa(pkgManager, args, {
       cwd: targetDir,
@@ -38,6 +36,7 @@ export default async (pkgManager, targetDir) => {
 
     child.on('close', (code) => {
       if (code !== 0) {
+        // eslint-disable-next-line prefer-promise-reject-errors
         reject(`pkgManager failed: ${pkgManager} ${args.join(' ')}`);
         return;
       }
@@ -47,19 +46,19 @@ export default async (pkgManager, targetDir) => {
 };
 
 // 进度读取来自于 vue-cli
-function renderProgressBar(curr, total) {
+function renderProgressBar (curr, total) {
   const ratio = Math.min(Math.max(curr / total, 0), 1);
   const bar = ` ${curr}/${total}`;
   const availableSpace = Math.max(0, process.stderr.columns - bar.length - 3);
   const width = Math.min(total, availableSpace);
   const completeLength = Math.round(width * ratio);
-  const complete = `#`.repeat(completeLength);
-  const incomplete = `-`.repeat(width - completeLength);
+  const complete = '#'.repeat(completeLength);
+  const incomplete = '-'.repeat(width - completeLength);
   toStartOfLine(process.stderr);
   process.stderr.write(`[${complete}${incomplete}]${bar}`);
 }
 
-function toStartOfLine(stream) {
+function toStartOfLine (stream) {
   if (!chalk.supportsColor) {
     stream.write('\r');
     return;

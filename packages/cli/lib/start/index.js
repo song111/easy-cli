@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _yargs = require("yargs");
-
 var _default = cli => {
   cli.register('start', '启动项目开发服务', yargs => {
     yargs.option('open', {
@@ -21,7 +19,9 @@ var _default = cli => {
       requiresArg: true,
       describe: '指定 devServer 端口号'
     });
-  }, argv => {});
+  }, argv => {
+    require('./start.js')(cli, argv);
+  });
 };
 
 exports.default = _default;

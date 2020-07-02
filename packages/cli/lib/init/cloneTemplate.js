@@ -15,7 +15,7 @@ var _gitClone = _interopRequireDefault(require("git-clone"));
 
 var _cliUtils = require("@chrissong/cli-utils");
 
-/**克隆模版到临时文件夹
+/** 克隆模版到临时文件夹
  * @param{string} repo      git地址
  * @param{string} branchName    分支名称
  * */

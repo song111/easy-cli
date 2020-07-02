@@ -3,7 +3,7 @@ import path from 'path';
 import gitclone from 'git-clone';
 import { fs, chalk, logger, spinner } from '@chrissong/cli-utils';
 
-/**克隆模版到临时文件夹
+/** 克隆模版到临时文件夹
  * @param{string} repo      git地址
  * @param{string} branchName    分支名称
  * */

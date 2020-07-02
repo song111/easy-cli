@@ -15,9 +15,15 @@ var _fs = _interopRequireDefault(require("fs"));
 
 var _yargs = _interopRequireDefault(require("yargs"));
 
+var _fkill = _interopRequireDefault(require("fkill"));
+
+var _child_process = require("child_process");
+
 var _cliUtils = require("@chrissong/cli-utils");
 
 var _init = _interopRequireDefault(require("./init"));
+
+var _start = _interopRequireDefault(require("./start"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -27,8 +33,10 @@ class Cli {
   constructor(cwd, argv = []) {
     this.cwd = cwd;
     this.argv = argv;
-    this.plugins = [_init.default];
+    this.plugins = [_init.default, _start.default];
     this.commands = {}; // 命令集合
+
+    this.subprocess = []; // 子进程
 
     this.init();
   } // 初始化
@@ -47,6 +55,41 @@ class Cli {
 
   get version() {
     return this.pkg.version;
+  }
+  /**
+   * 子进程执行脚本
+   * @param {String} path
+   * @param  {String[]} argv
+   * @param  {Object} options
+   */
+
+
+  fork(path, argv, options) {
+    const subprocess = (0, _child_process.fork)(path, argv, _objectSpread({
+      env: this.env,
+      // 子进程继承当前环境的环境变量
+      execArgv: [`--inspect-brk=127.0.0.1:${process.debugPort + 1}`]
+    }, options));
+    subprocess.on('close', () => {
+      const index = this.subprocess.findIndex(item => item === subprocess);
+      this.subprocess.splice(index, 1);
+    });
+    this.subprocess.push(subprocess);
+    return subprocess;
+  }
+  /**
+   * 退出进程
+   * @param {Number} code
+   **/
+
+
+  async exit(code) {
+    const subPIds = this.subprocess.map(subp => subp.pid);
+    await (0, _fkill.default)(subPIds, {
+      force: true,
+      tree: true
+    });
+    process.exit(code);
   }
   /**
    * 获取当前环境的环境变量

@@ -29,7 +29,8 @@ var _selectTemplate = require("./selectTemplate");
  * @param{object} argv  命令行参数
  */
 async function init(cli, argv) {
-  const targetDir = _path.default.resolve(cli.cwd, argv.name); // 项目重复验证
+  const targetDir = _path.default.resolve(cli.cwd, argv.name); // 项目名称校验
+  // 项目重复验证
 
 
   if (_cliUtils.fs.existsSync(targetDir)) {

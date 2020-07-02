@@ -17,5 +17,4 @@ yargs
 
 const cli = new Cli(process.cwd());
 
-debugger;
 cli.parse(process.argv.slice(2));
