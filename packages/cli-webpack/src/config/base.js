@@ -8,21 +8,21 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
  */
 
 export default (api) => {
-  api.chainWebpack((webpackConfig) => {
+  api.chainWebpack((config) => {
     const env = api.env;
     const { alias, pages = {} } = api.easyConfig;
-
+    debugger
     // 设置context
-    webpackConfig.context(api.context).target('web');
+    config.context(api.context).target('web');
 
     // output配置
-    webpackConfig.output.path(api.resolve('dist')).publicPath('./');
+    config.output.path(api.resolve('dist')).publicPath('./');
 
     // resolve 配置
-    webpackConfig.resolve
-      .when(alias, (webpackConfig) => {
+    config.resolve
+      .when(alias, (config) => {
         Object.keys(alias).forEach((key) => {
-          webpackConfig.alias.set(key, api.resolve(alias[key]));
+          config.alias.set(key, api.resolve(alias[key]));
         });
       })
       .extensions.merge(['.js', '.jsx', '.json', '.ts', 'tsx', 'css'])
@@ -34,7 +34,7 @@ export default (api) => {
     /**
      * 设置node变量
      */
-    webpackConfig.node.merge({
+    config.node.merge({
       setImmediate: false,
       process: 'mock',
       dgram: 'empty',
@@ -47,7 +47,7 @@ export default (api) => {
     /**
      * 代码切割与打包优化
      */
-    webpackConfig.optimization
+    config.optimization
       .splitChunks({
         chunks: 'all',
         name: false,
@@ -61,7 +61,7 @@ export default (api) => {
     /**
      * eslint配置
      */
-    webpackConfig.module
+    config.module
       .rule('eslint')
       .test(/\.jsx?$/)
       .pre()
@@ -78,7 +78,7 @@ export default (api) => {
     /**
      * babel配置
      */
-    webpackConfig.module
+    config.module
       .rule('babel')
       .test(/\.jsx?$/)
       .exclude.add(api.resolve('node_modules'))
@@ -89,7 +89,7 @@ export default (api) => {
     /**
      * 图片文件loader
      */
-    webpackConfig.module
+    config.module
       .rule('images')
       .test(/\.(png|jpe?g|gif|webp)(\?.*)?$/)
       .use('url-loader')
@@ -103,7 +103,7 @@ export default (api) => {
      * svg文件loader
      * 方便单独处理svg，例如转换为react组件
      */
-    webpackConfig.module
+    config.module
       .rule('svg')
       .test(/\.svg(\?.*)?$/)
       .use('url-loader')
@@ -116,7 +116,7 @@ export default (api) => {
     /**
      * 音视频媒体文件loader
      */
-    webpackConfig.module
+    config.module
       .rule('media')
       .test(/\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/)
       .use('url-loader')
@@ -129,7 +129,7 @@ export default (api) => {
     /**
      * 字体文件loader
      */
-    webpackConfig.module
+    config.module
       .rule('fonts')
       .test(/\.(woff2?|eot|ttf|otf)(\?.*)?$/)
       .use('url-loader')
@@ -142,7 +142,7 @@ export default (api) => {
     /**
      * 环境变量
      */
-    webpackConfig.plugin('define').use(DefinePlugin, [
+    config.plugin('define').use(DefinePlugin, [
       {
         'process.env': Object.keys(env).reduce((envs, key) => {
           envs[key] = `"${env[key]}"`;
@@ -154,12 +154,12 @@ export default (api) => {
     /**
      * 区分大小写路径
      */
-    webpackConfig.plugin('case-sensitive-paths').use(CaseSensitivePathsPlugin);
+    config.plugin('case-sensitive-paths').use(CaseSensitivePathsPlugin);
 
     /**
      * 进度条
      */
-    webpackConfig.plugin('progress').use(ProgressPlugin, [
+    config.plugin('progress').use(ProgressPlugin, [
       {
         activeModules: false
       }
@@ -172,12 +172,13 @@ export default (api) => {
       const { entry, template, ...props } = pages[key];
 
       if (Array.isArray(entry)) {
-        entry.forEach((en) => webpackConfig.entry(key).add(en));
+        entry.forEach((en) => config.entry(key).add(en));
       } else {
-        webpackConfig.entry(key).add(entry);
+        config.entry(key).add(entry);
       }
-      webpackConfig.when(template, (webpackConfig) => {
-        webpackConfig.plugin(`html-${key}`).use(HtmlWebpackPlugin, [
+      debugger
+      config.when(template, (config) => {
+        config.plugin(`html-${key}`).use(HtmlWebpackPlugin, [
           {
             filename: `${key}.html`,
             template: api.resolve(template),

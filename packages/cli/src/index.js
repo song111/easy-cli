@@ -6,12 +6,13 @@ import { fork } from 'child_process';
 import { logger, findRoot, chalk } from '@chrissong/cli-utils';
 import init from './init';
 import start from './start';
+import build from './build'
 
 export default class Cli {
   constructor (cwd, argv = []) {
     this.cwd = cwd;
     this.argv = argv;
-    this.plugins = [init, start];
+    this.plugins = [init, start, build];
     this.commands = {}; // 命令集合
     this.subprocess = []; // 子进程
     this.init();

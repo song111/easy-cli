@@ -4,7 +4,6 @@ import fkill from 'fkill';
 import { logger } from '@chrissong/cli-utils';
 
 const start = (cli) => {
-  debugger;
   return cli
     .fork(path.resolve(__dirname, './server.js'), cli.argv, {
       cwd: cli.cwd,

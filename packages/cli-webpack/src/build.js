@@ -1,21 +1,36 @@
 import Api from './api';
 import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
-import { open } from '@chrissong/cli-utils';
+import { fs, logger } from '@chrissong/cli-utils';
 
-const start = (options) => {
+export default async (options) => {
   const api = new Api('production', options);
-  const config = api.resolveWebpackConfig();
-
+  const config = await api.resolveWebpackConfig();
+  debugger
+  // 清空文件夹
+  await fs.remove(config.output.path)
   return new Promise((resolve, reject) => {
-    const compiler = webpack(config);
-    const server = new WebpackDevServer(compiler, config.devServer);
-    server.listen(config.devServer.port, config.devServer.host, (err) => {
-      if (err) return reject(err);
-      resolve();
-      if (api.argv.open) open(`http://localhost:${config.devServer.port}/${api.easyConfig.baseURL}`);
-    });
-  });
+    webpack(config, (err, stats) => {
+      if (err) return reject(err)
+      // 打印结果
+      process.stdout.write(
+        stats.toString({
+          colors: true,
+          modules: false,
+          children: false,
+          chunks: false,
+          chunkModules: false
+        }) + '\n\n'
+      )
+      if (stats.hasErrors()) {
+        logger.error('打包失败')
+        reject(new Error('Webpack build failed'))
+      } else if (stats.hasWarnings()) {
+        logger.warn('打包成功，但具有警告信息')
+        resolve()
+      } else {
+        logger.done('打包成功')
+        resolve()
+      }
+    })
+  })
 };
-
-export default start;

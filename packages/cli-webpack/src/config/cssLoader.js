@@ -24,7 +24,7 @@ export default (webpackConfig, { isProd, sourceMap, filename, chunkFilename, css
     cssnanoOptions.map = { inline: false };
   }
 
-  function createCSSRule(lang, test, loader, options) {
+  function createCSSRule (lang, test, loader, options) {
     const baseRule = webpackConfig.module.rule(lang).test(test);
 
     if (isProd) {

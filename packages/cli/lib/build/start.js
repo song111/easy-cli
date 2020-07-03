@@ -16,6 +16,7 @@ var _fkill = _interopRequireDefault(require("fkill"));
 var _cliUtils = require("@chrissong/cli-utils");
 
 const start = cli => {
+  debugger;
   return cli.fork(_path.default.resolve(__dirname, './server.js'), cli.argv, {
     cwd: cli.cwd,
     env: cli.env,

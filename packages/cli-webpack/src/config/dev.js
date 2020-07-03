@@ -13,7 +13,7 @@ export default async (api) => {
 
   const port = await detectPort(api.argv.port);
 
-  api.chainWebpack((webpackConfig) => {
+  api.chainWebpack((config) => {
     const { baseURL, proxy } = api.easyConfig;
 
     const url = `http://localhost:${port}/${baseURL}`;
@@ -22,7 +22,7 @@ export default async (api) => {
       .join('\n');
 
     // 加载样式
-    cssLoader(webpackConfig, {
+    cssLoader(config, {
       isProd: false,
       extract: false,
       sourceMap: true,
@@ -34,7 +34,7 @@ export default async (api) => {
     /**
      * 配置模式与devtool
      */
-    webpackConfig
+    config
       .watch(true)
       .mode('development')
       .devtool('cheap-module-eval-source-map')
@@ -43,7 +43,7 @@ export default async (api) => {
     /**
      * devServer
      */
-    webpackConfig.devServer
+    config.devServer
       // 热更新ws地址与location.host保持一致
       .host('0.0.0.0')
       .port(port)
@@ -52,7 +52,7 @@ export default async (api) => {
       .watchContentBase(true) // 检测public下文件变动
       .publicPath('')
       .disableHostCheck(true)
-      .clientLogLevel('warning')
+      .clientLogLevel('silent')
       .compress(true)
       .overlay(true)
       .quiet(true)
@@ -89,12 +89,12 @@ export default async (api) => {
     /**
      * 热更新
      */
-    webpackConfig.plugin('hmr').use(HotModuleReplacementPlugin);
+    config.plugin('hmr').use(HotModuleReplacementPlugin);
 
     /***
      * 错误提示
      */
-    webpackConfig.plugin('friendly-errors').use(FriendlyErrorsPlugin, [
+    config.plugin('friendly-errors').use(FriendlyErrorsPlugin, [
       {
         compilationSuccessInfo: {
           messages: [`你的应用程序运行在: ${url}`],

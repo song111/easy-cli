@@ -13,11 +13,11 @@ import cssLoader from './cssLoader';
 export default (api) => {
   if (api.mode !== 'production') return;
 
-  api.chainWebpack((webpackConfig) => {
-    const { pages = {} } = api.easyConfig;
+  api.chainWebpack((config) => {
+    // const { pages = {} } = api.easyConfig;
     const { sourcemap, report } = api.argv;
 
-    cssLoader(webpackConfig, {
+    cssLoader(config, {
       isProd: false,
       extract: true,
       sourceMap: sourcemap,
@@ -30,7 +30,7 @@ export default (api) => {
      * 配置模式与devtool
      * 输出文件名设置
      */
-    webpackConfig
+    config
       .watch(false)
       .mode('production')
       .devtool(sourcemap ? 'source-map' : false)
@@ -40,19 +40,19 @@ export default (api) => {
     /**
      * 不输出优化提示
      */
-    webpackConfig.performance.merge({
+    config.performance.merge({
       hints: false
     });
 
     /**
      * 设置压缩代码
      */
-    webpackConfig.optimization.minimize(true);
+    config.optimization.minimize(true);
 
     /**
      * 压缩js
      */
-    webpackConfig.optimization.minimizer('terser').use(TerserPlugin, [
+    config.optimization.minimizer('terser').use(TerserPlugin, [
       {
         terserOptions: {
           parse: {
@@ -102,7 +102,7 @@ export default (api) => {
     /**
      * 压缩css
      */
-    webpackConfig.optimization.minimizer('optimize').use(OptimizeCSSAssetsPlugin, [
+    config.optimization.minimizer('optimize').use(OptimizeCSSAssetsPlugin, [
       {
         cssProcessorOptions: {
           parser: postcssSafeParser,
@@ -123,44 +123,44 @@ export default (api) => {
     /**
      * 使用chunk.name作为chunk.id，方便区别chunk文件，加强缓存
      */
-    webpackConfig.plugin('NamedChunksPlugin').use(NamedChunksPlugin, [
+    config.plugin('NamedChunksPlugin').use(NamedChunksPlugin, [
       (chunk) => {
         return chunk.name || `chunk-${hash(Array.from(chunk.modulesIterable, (m) => m.id).join('_'))}`;
       }
     ]);
 
-    /**
-     * 拷贝public文件夹下的文件
-     */
-    webpackConfig.plugin('copy').use(CopyWebpackPlugin, [
-      [
-        {
-          from: api.resolve('public'),
-          to: '.',
-          toType: 'dir'
-        }
-      ]
-    ]);
+    // /**
+    //  * 拷贝public文件夹下的文件
+    //  */
+    // config.plugin('copy').use(CopyWebpackPlugin, [
+    //   [
+    //     {
+    //       from: api.resolve('public'),
+    //       to: '.',
+    //       toType: 'dir'
+    //     }
+    //   ]
+    // ]);
 
-    /**
-     * prefetch配置
-     */
-    webpackConfig.when(
-      Object.keys(pages).find((key) => pages[key].template),
-      (config) => {
-        config.plugin('prefetch').use(PreloadWebpackPlugin, [
-          {
-            rel: 'prefetch',
-            include: 'asyncChunks'
-          }
-        ]);
-      }
-    );
+    // /**
+    //  * prefetch配置
+    //  */
+    // config.when(
+    //   Object.keys(pages).find((key) => pages[key].template),
+    //   (config) => {
+    //     config.plugin('prefetch').use(PreloadWebpackPlugin, [
+    //       {
+    //         rel: 'prefetch',
+    //         include: 'asyncChunks'
+    //       }
+    //     ]);
+    //   }
+    // );
 
     /**
      * bundle-analyzer插件
      */
-    webpackConfig.when(report, (config) => {
+    config.when(report, (config) => {
       config.plugin('bundle-analyzer').use(BundleAnalyzerPlugin, [
         {
           logLevel: 'warn',
