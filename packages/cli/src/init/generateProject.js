@@ -13,7 +13,7 @@ export default async (template, projectName, targetDir) => {
   const pkgJson = await fs.readJson(pkgPath);
   pkgJson.name = projectName;
   await fs.writeJson(pkgPath, pkgJson, { spaces: 2 });
-  await fs.ensureDir(targetDir); //创建本地项目
+  await fs.ensureDir(targetDir); // 创建本地项目
 
   await Promise.all(
     fs.readdirSync(template).map((file) => {
