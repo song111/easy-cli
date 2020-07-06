@@ -6,11 +6,12 @@ import { open } from '@chrissong/cli-utils';
 const start = async (options) => {
   const api = new Api('development', options);
   const config = await api.resolveWebpackConfig();
-
+  debugger;
   return new Promise((resolve, reject) => {
     const compiler = webpack(config);
-    const server = new WebpackDevServer(compiler, config.devServer);
     debugger;
+    const server = new WebpackDevServer(compiler, config.devServer);
+
     server.listen(config.devServer.port, config.devServer.host, (err) => {
       if (err) return reject(err);
       resolve();

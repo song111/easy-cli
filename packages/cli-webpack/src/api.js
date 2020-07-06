@@ -89,7 +89,7 @@ export default class API {
     const pkg = this.resolve('package.json');
     if (fs.existsSync(pkg)) {
       try {
-        return require(pkg);
+        return require(pkg)
       } catch (e) {
         logger.error(`读取 ${pkg} 失败`);
         return {};
@@ -105,7 +105,7 @@ export default class API {
     const plugins = ['./config/base', './config/dev', './config/prod'];
     return plugins.map((id) => {
       try {
-        return require(id);
+        return require(id).default;
       } catch (err) {
         logger.error(`插件 ${id} 加载失败`);
         throw err;
@@ -120,7 +120,7 @@ export default class API {
     const config = new WebpackChain();
     const { chainWebpack } = this.easyConfig;
     // 生成webpack配置
-    await parallelToSerial(this.plugins.map((plugin) => this.use(config)(plugin.default)));
+    await parallelToSerial(this.plugins.map(this.use(config)));
 
     return chainWebpack(config).toConfig(); // 加载配置项的webpack 配置
   }

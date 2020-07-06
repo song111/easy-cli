@@ -27,7 +27,7 @@ var _default = async (template, projectName, targetDir) => {
   await _cliUtils.fs.writeJson(pkgPath, pkgJson, {
     spaces: 2
   });
-  await _cliUtils.fs.ensureDir(targetDir); //创建本地项目
+  await _cliUtils.fs.ensureDir(targetDir); // 创建本地项目
 
   await Promise.all(_cliUtils.fs.readdirSync(template).map(file => {
     return _cliUtils.fs.move(_path.default.join(template, file), _path.default.join(targetDir, file), {

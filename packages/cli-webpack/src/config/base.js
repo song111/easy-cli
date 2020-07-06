@@ -18,19 +18,27 @@ export default (api) => {
     // output配置
     config.output.path(api.resolve('dist')).publicPath('./');
 
-    // resolve 配置
+    /**
+     * resolve配置
+     */
     config.resolve
-      .when(alias, (config) => {
-        Object.keys(alias).forEach((key) => {
-          config.alias.set(key, api.resolve(alias[key]));
-        });
+      .when(alias, config => {
+      // 路径别名
+        Object.keys(alias).forEach(key => {
+          config.alias.set(key, api.resolve(alias[key]))
+        })
       })
-      .extensions.merge(['.js', '.jsx', '.json', '.ts', 'tsx', 'css'])
+      .extensions.merge(['.mjs', '.js', '.jsx', '.ts', 'tsx', '.json', '.wasm'])
       .end()
       .mainFields.merge(['browser', 'main', 'module'])
       .end()
-      .modules.merge(['node_modules', api.resolve('node_modules')]);
-
+      .modules.merge(['node_modules', api.resolve('node_modules')])
+      .end()
+      .end()
+      .resolveLoader.modules.merge([
+        'node_modules',
+        api.resolve('node_modules')
+      ])
     /**
      * 设置node变量
      */
@@ -65,7 +73,7 @@ export default (api) => {
       .rule('eslint')
       .test(/\.jsx?$/)
       .pre()
-      .exclude.add(api.resolve('node_modules'))
+      .include.add(api.resolve('src'))
       .end()
       .use('eslint-loader')
       .loader('eslint-loader')
@@ -81,7 +89,7 @@ export default (api) => {
     config.module
       .rule('babel')
       .test(/\.jsx?$/)
-      .exclude.add(api.resolve('node_modules'))
+      .include.add(api.resolve('src'))
       .end()
       .use('babel-loader')
       .loader('babel-loader');
