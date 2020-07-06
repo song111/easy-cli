@@ -11,13 +11,13 @@ var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"))
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _api = _interopRequireDefault(require("./api"));
-
 var _webpack = _interopRequireDefault(require("webpack"));
 
 var _webpackDevServer = _interopRequireDefault(require("webpack-dev-server"));
 
 var _cliUtils = require("@chrissong/cli-utils");
+
+var _api = _interopRequireDefault(require("./api"));
 
 var start = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(options) {
@@ -34,8 +34,8 @@ var start = /*#__PURE__*/function () {
             config = _context.sent;
             return _context.abrupt("return", new Promise(function (resolve, reject) {
               var compiler = (0, _webpack["default"])(config);
-              var server = new _webpackDevServer["default"](compiler, config.devServer);
               debugger;
+              var server = new _webpackDevServer["default"](compiler, config.devServer);
               server.listen(config.devServer.port, config.devServer.host, function (err) {
                 if (err) return reject(err);
                 resolve();
@@ -58,4 +58,5 @@ var start = /*#__PURE__*/function () {
 
 var _default = start;
 exports["default"] = _default;
+module.exports = exports.default;
 //# sourceMappingURL=start.js.map

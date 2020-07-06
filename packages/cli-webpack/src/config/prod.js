@@ -12,7 +12,6 @@ export default (api) => {
   if (api.mode !== 'production') return;
 
   api.chainWebpack((config) => {
-    // const { pages = {} } = api.easyConfig;
     const { sourcemap, report } = api.argv;
 
     cssLoader(config, {

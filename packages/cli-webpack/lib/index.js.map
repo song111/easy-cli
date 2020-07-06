@@ -1,1 +1,1 @@
-{"version":3,"sources":["../src/index.js"],"names":[],"mappings":";;;;;;;;;;;;;;AAAA","sourcesContent":["import start from './start';\r\n\r\nexport { start };\r\n"],"file":"index.js"}
+{"version":3,"sources":["../src/index.js"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;AAAA;;AACA","sourcesContent":["import start from './start';\nimport build from './build'\n\nexport { start, build };\n"],"file":"index.js"}

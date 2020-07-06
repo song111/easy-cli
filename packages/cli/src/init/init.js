@@ -12,7 +12,7 @@ import { getTemplateQues, getTemplateBranchByParams, templateRepo } from './sele
  * @param{object} cli   cli实例对象
  * @param{object} argv  命令行参数
  */
-async function init(cli, argv) {
+async function init (cli, argv) {
   const targetDir = path.resolve(cli.cwd, argv.name);
 
   // 项目名称校验

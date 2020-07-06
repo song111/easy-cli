@@ -11,12 +11,12 @@ export default (api) => {
   api.chainWebpack((config) => {
     const env = api.env;
     const { alias, pages = {} } = api.easyConfig;
-    debugger
+
     // 设置context
     config.context(api.context).target('web');
 
     // output配置
-    config.output.path(api.resolve('dist')).publicPath('./');
+    config.output.path(api.resolve('build')).publicPath('./');
 
     /**
      * resolve配置
@@ -28,7 +28,7 @@ export default (api) => {
           config.alias.set(key, api.resolve(alias[key]))
         })
       })
-      .extensions.merge(['.mjs', '.js', '.jsx', '.ts', 'tsx', '.json', '.wasm'])
+      .extensions.merge(['.mjs', '.js', '.jsx', '.json', '.wasm'])
       .end()
       .mainFields.merge(['browser', 'main', 'module'])
       .end()
@@ -39,6 +39,7 @@ export default (api) => {
         'node_modules',
         api.resolve('node_modules')
       ])
+
     /**
      * 设置node变量
      */
@@ -73,7 +74,7 @@ export default (api) => {
       .rule('eslint')
       .test(/\.jsx?$/)
       .pre()
-      .include.add(api.resolve('src'))
+      .exclude.add(api.resolve('node_modules'))
       .end()
       .use('eslint-loader')
       .loader('eslint-loader')
@@ -89,7 +90,7 @@ export default (api) => {
     config.module
       .rule('babel')
       .test(/\.jsx?$/)
-      .include.add(api.resolve('src'))
+      .exclude.add(api.resolve('node_modules'))
       .end()
       .use('babel-loader')
       .loader('babel-loader');
@@ -184,7 +185,7 @@ export default (api) => {
       } else {
         config.entry(key).add(entry);
       }
-      debugger
+
       config.when(template, (config) => {
         config.plugin(`html-${key}`).use(HtmlWebpackPlugin, [
           {

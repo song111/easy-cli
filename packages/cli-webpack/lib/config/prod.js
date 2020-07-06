@@ -15,11 +15,7 @@ var _webpack = require("webpack");
 
 var _terserWebpackPlugin = _interopRequireDefault(require("terser-webpack-plugin"));
 
-var _copyWebpackPlugin = _interopRequireDefault(require("copy-webpack-plugin"));
-
 var _postcssSafeParser = _interopRequireDefault(require("postcss-safe-parser"));
-
-var _preloadWebpackPlugin = _interopRequireDefault(require("preload-webpack-plugin"));
 
 var _webpackBundleAnalyzer = require("webpack-bundle-analyzer");
 
@@ -30,13 +26,11 @@ var _cssLoader = _interopRequireDefault(require("./cssLoader"));
 /* eslint-disable indent */
 var _default = function _default(api) {
   if (api.mode !== 'production') return;
-  api.chainWebpack(function (webpackConfig) {
-    var _api$easyConfig$pages = api.easyConfig.pages,
-        pages = _api$easyConfig$pages === void 0 ? {} : _api$easyConfig$pages;
+  api.chainWebpack(function (config) {
     var _api$argv = api.argv,
         sourcemap = _api$argv.sourcemap,
         report = _api$argv.report;
-    (0, _cssLoader["default"])(webpackConfig, {
+    (0, _cssLoader["default"])(config, {
       isProd: false,
       extract: true,
       sourceMap: sourcemap,
@@ -49,24 +43,24 @@ var _default = function _default(api) {
      * 输出文件名设置
      */
 
-    webpackConfig.watch(false).mode('production').devtool(sourcemap ? 'source-map' : false).output.filename('static/js/[name].[contenthash:8].js').chunkFilename('static/js/[name].[contenthash:8].js');
+    config.watch(false).mode('production').devtool(sourcemap ? 'source-map' : false).output.filename('static/js/[name].[contenthash:8].js').chunkFilename('static/js/[name].[contenthash:8].js');
     /**
      * 不输出优化提示
      */
 
-    webpackConfig.performance.merge({
+    config.performance.merge({
       hints: false
     });
     /**
      * 设置压缩代码
      */
 
-    webpackConfig.optimization.minimize(true);
+    config.optimization.minimize(true);
     /**
      * 压缩js
      */
 
-    webpackConfig.optimization.minimizer('terser').use(_terserWebpackPlugin["default"], [{
+    config.optimization.minimizer('terser').use(_terserWebpackPlugin["default"], [{
       terserOptions: {
         parse: {
           // we want terser to parse ecma 8 code. However, we don't want it
@@ -114,7 +108,7 @@ var _default = function _default(api) {
      * 压缩css
      */
 
-    webpackConfig.optimization.minimizer('optimize').use(_optimizeCssAssetsWebpackPlugin["default"], [{
+    config.optimization.minimizer('optimize').use(_optimizeCssAssetsWebpackPlugin["default"], [{
       cssProcessorOptions: {
         parser: _postcssSafeParser["default"],
         map: sourcemap ? {
@@ -131,37 +125,42 @@ var _default = function _default(api) {
      * 使用chunk.name作为chunk.id，方便区别chunk文件，加强缓存
      */
 
-    webpackConfig.plugin('NamedChunksPlugin').use(_webpack.NamedChunksPlugin, [function (chunk) {
+    config.plugin('NamedChunksPlugin').use(_webpack.NamedChunksPlugin, [function (chunk) {
       return chunk.name || "chunk-".concat((0, _hashSum["default"])(Array.from(chunk.modulesIterable, function (m) {
         return m.id;
       }).join('_')));
-    }]);
-    /**
-     * 拷贝public文件夹下的文件
-     */
+    }]); // /**
+    //  * 拷贝public文件夹下的文件
+    //  */
+    // config.plugin('copy').use(CopyWebpackPlugin, [
+    //   [
+    //     {
+    //       from: api.resolve('public'),
+    //       to: '.',
+    //       toType: 'dir'
+    //     }
+    //   ]
+    // ]);
+    // /**
+    //  * prefetch配置
+    //  */
+    // config.when(
+    //   Object.keys(pages).find((key) => pages[key].template),
+    //   (config) => {
+    //     config.plugin('prefetch').use(PreloadWebpackPlugin, [
+    //       {
+    //         rel: 'prefetch',
+    //         include: 'asyncChunks'
+    //       }
+    //     ]);
+    //   }
+    // );
 
-    webpackConfig.plugin('copy').use(_copyWebpackPlugin["default"], [[{
-      from: api.resolve('public'),
-      to: '.',
-      toType: 'dir'
-    }]]);
-    /**
-     * prefetch配置
-     */
-
-    webpackConfig.when(Object.keys(pages).find(function (key) {
-      return pages[key].template;
-    }), function (config) {
-      config.plugin('prefetch').use(_preloadWebpackPlugin["default"], [{
-        rel: 'prefetch',
-        include: 'asyncChunks'
-      }]);
-    });
     /**
      * bundle-analyzer插件
      */
 
-    webpackConfig.when(report, function (config) {
+    config.when(report, function (config) {
       config.plugin('bundle-analyzer').use(_webpackBundleAnalyzer.BundleAnalyzerPlugin, [{
         logLevel: 'warn',
         analyzerMode: 'static',
@@ -172,4 +171,5 @@ var _default = function _default(api) {
 };
 
 exports["default"] = _default;
+module.exports = exports.default;
 //# sourceMappingURL=prod.js.map

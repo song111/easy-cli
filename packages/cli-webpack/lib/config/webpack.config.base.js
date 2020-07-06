@@ -11,29 +11,31 @@ var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/de
 
 var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutProperties"));
 
+var _htmlWebpackPlugin = _interopRequireDefault(require("html-webpack-plugin"));
+
 var _webpack = require("webpack");
 
 var _caseSensitivePathsWebpackPlugin = _interopRequireDefault(require("case-sensitive-paths-webpack-plugin"));
-
-var _htmlWebpackPlugin = _interopRequireDefault(require("html-webpack-plugin"));
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-/**
- * webpack通用配置
- * @param{Object} api api实例
- */
 var _default = function _default(api) {
   api.chainWebpack(function (config) {
     var env = api.env;
     var _api$easyConfig = api.easyConfig,
         alias = _api$easyConfig.alias,
         _api$easyConfig$pages = _api$easyConfig.pages,
-        pages = _api$easyConfig$pages === void 0 ? {} : _api$easyConfig$pages; // 设置context
+        pages = _api$easyConfig$pages === void 0 ? {} : _api$easyConfig$pages;
+    /**
+     * 设置context
+     */
 
-    config.context(api.context).target('web'); // output配置
+    config.context(api.context).target('web');
+    /**
+     * output配置
+     */
 
     config.output.path(api.resolve('build')).publicPath('./');
     /**
@@ -45,7 +47,7 @@ var _default = function _default(api) {
       Object.keys(alias).forEach(function (key) {
         config.alias.set(key, api.resolve(alias[key]));
       });
-    }).extensions.merge(['.mjs', '.js', '.jsx', '.json', '.wasm']).end().mainFields.merge(['browser', 'main', 'module']).end().modules.merge(['node_modules', api.resolve('node_modules')]).end().end().resolveLoader.modules.merge(['node_modules', api.resolve('node_modules')]);
+    }).extensions.merge(['.mjs', '.js', '.jsx', '.json', '.wasm']).end().mainFields.merge(['browser', 'main', 'module']).end().modules.merge(['node_modules', api.resolve('node_modules')]).end().end().resolveLoader.modules.merge(['node_modules', api.resolve('node_modules'), api.resolve('node_modules/@uyun/cli-webpack/node_modules')]);
     /**
      * 设置node变量
      */
@@ -127,16 +129,24 @@ var _default = function _default(api) {
       }, {})
     }]);
     /**
-     * 区分大小写路径
+     * 强制执行区分大小写的路径
      */
 
-    config.plugin('case-sensitive-paths').use(_caseSensitivePathsWebpackPlugin["default"]);
+    config.plugin('case-sensitive-paths').use(_caseSensitivePathsWebpackPlugin["default"]).end();
     /**
      * 进度条
      */
 
     config.plugin('progress').use(_webpack.ProgressPlugin, [{
       activeModules: false
+    }]);
+    /**
+     * 忽略moment locale文件
+     */
+
+    config.plugin('ignore-moment').use(_webpack.IgnorePlugin, [{
+      resourceRegExp: /^\.\/locale$/,
+      contextRegExp: /moment$/
     }]);
     /**
      * 打包入口与html模板
@@ -182,4 +192,4 @@ var _default = function _default(api) {
 
 exports["default"] = _default;
 module.exports = exports.default;
-//# sourceMappingURL=base.js.map
+//# sourceMappingURL=webpack.config.base.js.map

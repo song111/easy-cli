@@ -13,8 +13,6 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
-var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutProperties"));
-
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -39,12 +37,10 @@ var API = /*#__PURE__*/function () {
    *   easyConfig, // easy.config.js中的配置对象
    *   context // 当前执行的路径，即webpack的context属性，也是当前运行的cwd
    * }
-   * @param {Boolean} inspect 是否为inspect模式
    */
-  function API(mode, options, inspect) {
+  function API(mode, options) {
     (0, _classCallCheck2["default"])(this, API);
     this.mode = mode;
-    this.inspect = inspect;
     this.options = this.formatOptions(options);
     this.pkg = this.resolvePackage();
     this.plugins = this.resolvePlugins();
@@ -75,7 +71,7 @@ var API = /*#__PURE__*/function () {
       var _options$baseURL = options.baseURL,
           baseURL = _options$baseURL === void 0 ? '' : _options$baseURL,
           _chainWebpack = options.chainWebpack,
-          easyConfig = (0, _objectWithoutProperties2["default"])(options, ["baseURL", "chainWebpack"]);
+          easyConfig = options.easyConfig;
       return _objectSpread(_objectSpread({}, options), {}, {
         easyConfig: _objectSpread(_objectSpread({}, easyConfig), {}, {
           baseURL: baseURL.replace(/^\/+|\/+$/g, ''),
@@ -133,8 +129,6 @@ var API = /*#__PURE__*/function () {
     key: "resolveWebpackConfig",
     value: function () {
       var _resolveWebpackConfig = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-        var _this = this;
-
         var config, chainWebpack;
         return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
@@ -144,9 +138,7 @@ var API = /*#__PURE__*/function () {
                 chainWebpack = this.easyConfig.chainWebpack; // 生成webpack配置
 
                 _context.next = 4;
-                return (0, _cliUtils.parallelToSerial)(this.plugins.map(function (plugin) {
-                  return _this.use(config)(plugin["default"]);
-                }));
+                return (0, _cliUtils.parallelToSerial)(this.plugins.map(this.use(config)));
 
               case 4:
                 return _context.abrupt("return", chainWebpack(config).toConfig());
@@ -173,25 +165,23 @@ var API = /*#__PURE__*/function () {
   }, {
     key: "use",
     value: function use(config) {
-      var _this2 = this;
+      var _this = this;
 
       return function (plugin) {
         var api = {
-          env: _this2.env,
-          pkg: _this2.pkg,
-          mode: _this2.mode,
-          argv: _this2.argv,
-          inspect: _this2.inspect,
-          easyConfig: _this2.easyConfig,
-          context: _this2.context,
+          env: _this.env,
+          pkg: _this.pkg,
+          mode: _this.mode,
+          argv: _this.argv,
+          easyConfig: _this.easyConfig,
+          context: _this.context,
           resolve: function resolve(dir) {
-            return _this2.resolve(dir);
+            return _this.resolve(dir);
           },
           chainWebpack: function chainWebpack(callback) {
             return callback(config);
           }
         };
-        debugger;
         return function () {
           return plugin(api);
         };
@@ -240,4 +230,5 @@ var API = /*#__PURE__*/function () {
 }();
 
 exports["default"] = API;
+module.exports = exports.default;
 //# sourceMappingURL=api.js.map

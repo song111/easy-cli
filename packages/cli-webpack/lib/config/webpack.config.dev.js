@@ -13,18 +13,14 @@ var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
+var _styleLoader = _interopRequireDefault(require("./styleLoader"));
+
 var _webpack = require("webpack");
 
 var _friendlyErrorsWebpackPlugin = _interopRequireDefault(require("friendly-errors-webpack-plugin"));
 
 var _cliUtils = require("@chrissong/cli-utils");
 
-var _cssLoader = _interopRequireDefault(require("./cssLoader"));
-
-/**
- * webpack通用配置
- * @param{Object} api api实例
- */
 var _default = /*#__PURE__*/function () {
   var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(api) {
     var port;
@@ -48,14 +44,14 @@ var _default = /*#__PURE__*/function () {
             api.chainWebpack(function (config) {
               var _api$easyConfig = api.easyConfig,
                   baseURL = _api$easyConfig.baseURL,
+                  themes = _api$easyConfig.themes,
                   proxy = _api$easyConfig.proxy;
               var url = "http://localhost:".concat(port, "/").concat(baseURL);
               var ipv4 = (0, _cliUtils.getIPv4URL)(port, baseURL).map(function (url) {
                 return "    ".concat(url);
-              }).join('\n'); // 加载样式
-
-              (0, _cssLoader["default"])(config, {
-                isProd: false,
+              }).join('\n');
+              (0, _styleLoader["default"])(config, {
+                themes: themes,
                 extract: false,
                 sourceMap: true,
                 filename: 'static/css/[name].css',
@@ -73,7 +69,7 @@ var _default = /*#__PURE__*/function () {
 
               config.devServer // 热更新ws地址与location.host保持一致
               .host('0.0.0.0').port(port).hot(true).contentBase(api.resolve('public')).watchContentBase(true) // 检测public下文件变动
-              .publicPath('').disableHostCheck(true).clientLogLevel('silent').compress(true).overlay(true).quiet(true).inline(true).when(proxy, function (config) {
+              .publicPath('').disableHostCheck(true).clientLogLevel('warning').compress(true).overlay(true).quiet(true).inline(true).when(proxy, function (config) {
                 var _oProxy;
 
                 var oProxy = config.get('proxy');
@@ -145,4 +141,4 @@ var _default = /*#__PURE__*/function () {
 
 exports["default"] = _default;
 module.exports = exports.default;
-//# sourceMappingURL=dev.js.map
+//# sourceMappingURL=webpack.config.dev.js.map

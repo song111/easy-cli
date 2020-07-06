@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const yargs = require('yargs');
 const Cli = require('../lib');
 const { logger } = require('@chrissong/cli-utils');
