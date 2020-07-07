@@ -70,19 +70,19 @@ export default (api) => {
     /**
      * eslint配置
      */
-    config.module
-      .rule('eslint')
-      .test(/\.jsx?$/)
-      .pre()
-      .exclude.add(api.resolve('node_modules'))
-      .end()
-      .use('eslint-loader')
-      .loader('eslint-loader')
-      .options({
-        emitError: false,
-        emitWarning: true,
-        formatter: 'eslint/lib/cli-engine/formatters/codeframe'
-      });
+    // config.module
+    //   .rule('eslint')
+    //   .test(/\.jsx?$/)
+    //   .pre()
+    //   .exclude.add(api.resolve('node_modules'))
+    //   .end()
+    //   .use('eslint-loader')
+    //   .loader('eslint-loader')
+    //   .options({
+    //     emitError: false,
+    //     emitWarning: true,
+    //     formatter: 'eslint/lib/cli-engine/formatters/codeframe'
+    //   });
 
     /**
      * babel配置
@@ -174,40 +174,39 @@ export default (api) => {
       }
     ]);
 
+    debugger
+    // config.plugin('html-index').use(HtmlWebpackPlugin, [{
+    //   filename: 'index.html',
+    //   template: api.resolve('./public/index.html'),
+    //   hash: true
+    // }])
+
+    // config.entry('index')
+    //   .add('./src/index.js')
+
     /**
      * 打包入口与html模板
      */
     Object.keys(pages).forEach((key) => {
-      const { entry, template, ...props } = pages[key];
+      const { entry, template } = pages[key];
 
       if (Array.isArray(entry)) {
         entry.forEach((en) => config.entry(key).add(en));
       } else {
+        debugger
         config.entry(key).add(entry);
       }
 
+      debugger
       config.when(template, (config) => {
         config.plugin(`html-${key}`).use(HtmlWebpackPlugin, [
           {
             filename: `${key}.html`,
-            template: api.resolve(template),
-            templateParameters: (compilation, assets, options) => ({
-              ...env,
-              compilation: compilation,
-              webpack: compilation.getStats().toJson(),
-              webpackConfig: compilation.options,
-              htmlWebpackPlugin: {
-                files: assets,
-                options: options
-              }
-            }),
-            inject: true,
-            chunksSortMode: 'auto',
-            chunks: [key],
-            ...props
+            template: api.resolve(template)
           }
         ]);
       });
     });
+    /**************/
   });
 };

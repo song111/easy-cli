@@ -6,7 +6,7 @@ import { logger } from '@chrissong/cli-utils';
 const start = (cli) => {
   return cli
     .fork(path.resolve(__dirname, './server.js'), cli.argv, {
-      cwd: cli.cwd,
+      cwd: cli.root,
       env: cli.env,
       stdio: 'inherit'
     })

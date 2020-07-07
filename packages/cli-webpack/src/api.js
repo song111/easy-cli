@@ -69,6 +69,7 @@ export default class API {
    */
   formatOptions (options) {
     const { baseURL = '', chainWebpack, easyConfig } = options;
+    debugger;
     return {
       ...options,
       easyConfig: {
@@ -102,7 +103,7 @@ export default class API {
    * 读取package.json中的插件
    */
   resolvePlugins () {
-    const plugins = ['./config/base', './config/dev', './config/prod'];
+    const plugins = ['./webpack/webpack.config', './webpack/webpack.config.dev', './webpack/webpack.config.prod'];
     return plugins.map((id) => {
       try {
         return require(id);

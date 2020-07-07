@@ -17,7 +17,7 @@ var _cliUtils = require("@chrissong/cli-utils");
 
 const start = cli => {
   return cli.fork(_path.default.resolve(__dirname, './server.js'), cli.argv, {
-    cwd: cli.cwd,
+    cwd: cli.root,
     env: cli.env,
     stdio: 'inherit'
   }).on('message', msg => msg === 'EXIT_WITH_ERROR' && cli.exit(1));

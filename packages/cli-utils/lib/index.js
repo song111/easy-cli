@@ -85,6 +85,12 @@ Object.defineProperty(exports, "formatProxy", {
     return _formatProxy["default"];
   }
 });
+Object.defineProperty(exports, "dotenv", {
+  enumerable: true,
+  get: function get() {
+    return _dotenv["default"];
+  }
+});
 exports.spinner = void 0;
 
 var _chalk = _interopRequireDefault(require("chalk"));
@@ -116,4 +122,6 @@ var _parallelToSerial = _interopRequireDefault(require("./parallelToSerial"));
 var _getIPv4URL = _interopRequireDefault(require("./getIPv4URL"));
 
 var _formatProxy = _interopRequireDefault(require("./formatProxy"));
+
+var _dotenv = _interopRequireDefault(require("./dotenv"));
 //# sourceMappingURL=index.js.map

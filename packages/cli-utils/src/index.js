@@ -13,6 +13,7 @@ import getEasyConfig from './getEasyConfig';
 import parallelToSerial from './parallelToSerial';
 import getIPv4URL from './getIPv4URL';
 import formatProxy from './formatProxy';
+import dotenv from './dotenv'
 
 export {
   logger,
@@ -28,5 +29,6 @@ export {
   open,
   detectPort,
   getIPv4URL,
-  formatProxy
+  formatProxy,
+  dotenv
 };

@@ -7,11 +7,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
 
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
@@ -29,20 +31,20 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 var API = /*#__PURE__*/function () {
   /**
-   * @param {String} mode 当前执行模式
+   * 插件api
+   * @param {String} cmd 当前执行的命令
    * @param {Object} options
    * {
    *   env, // 环境变量
    *   argv, // 命令行参数
-   *   easyConfig, // easy.config.js中的配置对象
+   *   setup, // setup.config.js中的配置对象
    *   context // 当前执行的路径，即webpack的context属性，也是当前运行的cwd
    * }
    */
   function API(mode, options) {
     (0, _classCallCheck2["default"])(this, API);
     this.mode = mode;
-    this.options = this.formatOptions(options);
-    this.pkg = this.resolvePackage();
+    this.options = options;
     this.plugins = this.resolvePlugins();
   }
   /**
@@ -61,60 +63,24 @@ var API = /*#__PURE__*/function () {
       return _path["default"].resolve(this.context, dir);
     }
     /**
-     * 格式化options参数
-     * @param {Object} options
-     */
-
-  }, {
-    key: "formatOptions",
-    value: function formatOptions(options) {
-      var _options$baseURL = options.baseURL,
-          baseURL = _options$baseURL === void 0 ? '' : _options$baseURL,
-          _chainWebpack = options.chainWebpack,
-          easyConfig = options.easyConfig;
-      debugger;
-      return _objectSpread(_objectSpread({}, options), {}, {
-        easyConfig: _objectSpread(_objectSpread({}, easyConfig), {}, {
-          baseURL: baseURL.replace(/^\/+|\/+$/g, ''),
-          chainWebpack: function chainWebpack(config) {
-            if (typeof _chainWebpack === 'function') _chainWebpack(config);
-            return config;
-          }
-        })
-      });
-    }
-    /**
-     * 获取package.json信息
-     */
-
-  }, {
-    key: "resolvePackage",
-    value: function resolvePackage() {
-      var pkg = this.resolve('package.json');
-
-      if (_cliUtils.fs.existsSync(pkg)) {
-        try {
-          return require(pkg);
-        } catch (e) {
-          _cliUtils.logger.error("\u8BFB\u53D6 ".concat(pkg, " \u5931\u8D25"));
-
-          return {};
-        }
-      }
-
-      return {};
-    }
-    /**
-     * 读取package.json中的插件
+     * 加载插件
      */
 
   }, {
     key: "resolvePlugins",
     value: function resolvePlugins() {
-      var plugins = ['./webpack/webpack.config', './webpack/webpack.config.dev', './webpack/webpack.config.prod'];
-      return plugins.map(function (id) {
+      var plugins = [['./webpack/webpack.config'], ['./webpack/webpack.config.dev'], ['./webpack/webpack.config.prod']];
+      return plugins.concat([]).map(function (_ref) {
+        var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
+            id = _ref2[0],
+            opts = _ref2[1];
+
         try {
-          return require(id);
+          return {
+            id: id,
+            apply: require(id),
+            opts: opts
+          };
         } catch (err) {
           _cliUtils.logger.error("\u63D2\u4EF6 ".concat(id, " \u52A0\u8F7D\u5931\u8D25"));
 
@@ -130,21 +96,20 @@ var API = /*#__PURE__*/function () {
     key: "resolveWebpackConfig",
     value: function () {
       var _resolveWebpackConfig = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
-        var config, chainWebpack;
+        var config;
         return _regenerator["default"].wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                config = new _webpackChain["default"]();
-                chainWebpack = this.easyConfig.chainWebpack; // 生成webpack配置
+                config = new _webpackChain["default"](); //  对于webpackconfig任务需要串行执行
 
-                _context.next = 4;
+                _context.next = 3;
                 return (0, _cliUtils.parallelToSerial)(this.plugins.map(this.use(config)));
 
-              case 4:
-                return _context.abrupt("return", chainWebpack(config).toConfig());
+              case 3:
+                return _context.abrupt("return", config.toConfig());
 
-              case 5:
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -168,7 +133,9 @@ var API = /*#__PURE__*/function () {
     value: function use(config) {
       var _this = this;
 
-      return function (plugin) {
+      return function (_ref3) {
+        var id = _ref3.id,
+            apply = _ref3.apply;
         var api = {
           env: _this.env,
           pkg: _this.pkg,
@@ -176,15 +143,13 @@ var API = /*#__PURE__*/function () {
           argv: _this.argv,
           easyConfig: _this.easyConfig,
           context: _this.context,
-          resolve: function resolve(dir) {
-            return _this.resolve(dir);
-          },
+          resolve: _this.resolve,
           chainWebpack: function chainWebpack(callback) {
             return callback(config);
           }
         };
         return function () {
-          return plugin(api);
+          return apply(api);
         };
       };
     }
@@ -209,16 +174,17 @@ var API = /*#__PURE__*/function () {
       });
     }
     /**
-     * easyConfig配置文件对象
+     * setup配置文件对象
      */
 
   }, {
-    key: "easyConfig",
+    key: "setup",
     get: function get() {
       return this.options.easyConfig;
     }
     /**
      * 当前程序执行路径
+     * 等同于process.cwd和webpack的context路径
      */
 
   }, {
@@ -232,4 +198,4 @@ var API = /*#__PURE__*/function () {
 
 exports["default"] = API;
 module.exports = exports.default;
-//# sourceMappingURL=api.js.map
+//# sourceMappingURL=apl.js.map

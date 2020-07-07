@@ -1,10 +1,10 @@
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 import { open } from '@chrissong/cli-utils';
-import Api from './api';
+import API from './api';
 
 const start = async (options) => {
-  const api = new Api('development', options);
+  const api = new API('development', options);
   const config = await api.resolveWebpackConfig();
 
   return new Promise((resolve, reject) => {
