@@ -7,12 +7,13 @@ import { logger, findRoot, chalk } from '@chrissong/cli-utils';
 import init from './init';
 import start from './start';
 import build from './build'
+import lint from './lint'
 
 export default class Cli {
   constructor (cwd, argv = []) {
     this.cwd = cwd;
     this.argv = argv;
-    this.plugins = [init, start, build];
+    this.plugins = [init, start, build, lint];
     this.commands = {}; // 命令集合
     this.subprocess = []; // 子进程
     this.init();
@@ -107,7 +108,6 @@ export default class Cli {
    */
   register (cmd, desc, ...args) {
     const name = cmd.split(/\s+/)[0];
-
     if (!/^[\w:]+$/.test(name)) {
       // 只能有数字、字母、下划线、冒号组成
       throw new Error(`命令名称 ${chalk.redBright(name)} 不合法，只能是字母、数字、下划线、冒号`);
