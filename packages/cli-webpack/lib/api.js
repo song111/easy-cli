@@ -13,6 +13,8 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
+var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutProperties"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
 
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
@@ -37,11 +39,13 @@ var API = /*#__PURE__*/function () {
    *   easyConfig, // easy.config.js中的配置对象
    *   context // 当前执行的路径，即webpack的context属性，也是当前运行的cwd
    * }
+   * @param {Boolean} inspect 是否为inspect模式
    */
-  function API(mode, options) {
+  function API(mode, options, inspect) {
     (0, _classCallCheck2["default"])(this, API);
     this.mode = mode;
     this.options = this.formatOptions(options);
+    debugger;
     this.pkg = this.resolvePackage();
     this.plugins = this.resolvePlugins();
   }
@@ -71,7 +75,7 @@ var API = /*#__PURE__*/function () {
       var _options$baseURL = options.baseURL,
           baseURL = _options$baseURL === void 0 ? '' : _options$baseURL,
           _chainWebpack = options.chainWebpack,
-          easyConfig = options.easyConfig;
+          easyConfig = (0, _objectWithoutProperties2["default"])(options, ["baseURL", "chainWebpack"]);
       debugger;
       return _objectSpread(_objectSpread({}, options), {}, {
         easyConfig: _objectSpread(_objectSpread({}, easyConfig), {}, {
@@ -170,12 +174,24 @@ var API = /*#__PURE__*/function () {
 
       return function (plugin) {
         var api = {
-          env: _this.env,
-          pkg: _this.pkg,
-          mode: _this.mode,
-          argv: _this.argv,
-          easyConfig: _this.easyConfig,
-          context: _this.context,
+          env: function env() {
+            return _this.env;
+          },
+          pkg: function pkg() {
+            return _this.pkg;
+          },
+          mode: function mode() {
+            return _this.mode;
+          },
+          argv: function argv() {
+            return _this.argv;
+          },
+          easyConfig: function easyConfig() {
+            return _this.easyConfig;
+          },
+          context: function context() {
+            return _this.context;
+          },
           resolve: function resolve(dir) {
             return _this.resolve(dir);
           },
@@ -225,6 +241,15 @@ var API = /*#__PURE__*/function () {
     key: "context",
     get: function get() {
       return this.options.context;
+    }
+    /**
+     * 版本号
+     */
+
+  }, {
+    key: "version",
+    get: function get() {
+      return version;
     }
   }]);
   return API;

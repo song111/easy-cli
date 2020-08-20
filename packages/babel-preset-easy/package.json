@@ -1,5 +1,5 @@
 {
-  "name": "babel-preset-easy",
+  "name": "@chrissong/babel-preset-easy",
   "version": "0.0.1",
   "description": "babel preset",
   "main": "lib/index.js",
@@ -7,29 +7,39 @@
     "lib"
   ],
   "scripts": {
-    "dev": "babel src --out-dir ./lib --watch --source-maps",
+    "dev": "babel src --out-dir lib --watch --source-maps",
     "build": "npm run lint && npm run clean && babel src --out-dir ./lib",
     "clean": "rimraf lib",
     "lint": "eslint src --ext .js --fix"
   },
   "keywords": [
-    "react"
+    "babel",
+    "presets",
+    "everest"
   ],
   "author": "chrissong",
   "license": "ISC",
-  "dependencies":{
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.6",
-    "@babel/plugin-transform-runtime": "^7.9.6",
-    "@babel/preset-env": "^7.9.6",
-    "babel-plugin-add-module-exports": "^1.0.2"
+  "dependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/plugin-proposal-class-properties": "^7.10.1",
+    "@babel/plugin-proposal-decorators": "^7.10.1",
+    "@babel/plugin-proposal-export-default-from": "^7.10.1",
+    "@babel/plugin-proposal-export-namespace-from": "^7.10.1",
+    "@babel/plugin-transform-runtime": "^7.10.1",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "@babel/runtime": "^7.10.3"
   },
   "devDependencies": {
-    "eslint": "^7.4.0",
+    "@babel/cli": "^7.10.1",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "eslint": "^7.3.1",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1"
+    "eslint-plugin-standard": "^4.0.1",
+    "rimraf": "^3.0.2"
   }
 }

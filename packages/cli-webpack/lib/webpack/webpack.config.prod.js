@@ -15,9 +15,13 @@ var _webpack = require("webpack");
 
 var _terserWebpackPlugin = _interopRequireDefault(require("terser-webpack-plugin"));
 
+var _copyWebpackPlugin = _interopRequireDefault(require("copy-webpack-plugin"));
+
 var _postcssSafeParser = _interopRequireDefault(require("postcss-safe-parser"));
 
 var _webpackBundleAnalyzer = require("webpack-bundle-analyzer");
+
+var _preloadWebpackPlugin = _interopRequireDefault(require("preload-webpack-plugin"));
 
 var _optimizeCssAssetsWebpackPlugin = _interopRequireDefault(require("optimize-css-assets-webpack-plugin"));
 
@@ -25,11 +29,16 @@ var _cssLoader = _interopRequireDefault(require("./cssLoader"));
 
 /* eslint-disable indent */
 var _default = function _default(api) {
-  if (api.mode !== 'production') return;
+  if (api.mode() !== 'production') return;
   api.chainWebpack(function (config) {
-    var _api$argv = api.argv,
+    var _api$easyConfig = api.easyConfig(),
+        _api$easyConfig$pages = _api$easyConfig.pages,
+        pages = _api$easyConfig$pages === void 0 ? {} : _api$easyConfig$pages;
+
+    var _api$argv = api.argv(),
         sourcemap = _api$argv.sourcemap,
         report = _api$argv.report;
+
     (0, _cssLoader["default"])(config, {
       isProd: false,
       extract: true,

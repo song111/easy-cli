@@ -3,16 +3,19 @@ import isWsl from 'is-wsl';
 import hash from 'hash-sum';
 import { NamedChunksPlugin } from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin'
 import postcssSafeParser from 'postcss-safe-parser';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import PreloadWebpackPlugin from 'preload-webpack-plugin'
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import cssLoader from './cssLoader';
 
 export default (api) => {
-  if (api.mode !== 'production') return;
+  if (api.mode() !== 'production') return;
 
   api.chainWebpack((config) => {
-    const { sourcemap, report } = api.argv;
+    const {  pages = {} } = api.easyConfig()
+    const { sourcemap, report } = api.argv();
 
     cssLoader(config, {
       isProd: false,

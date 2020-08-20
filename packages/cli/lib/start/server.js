@@ -12,7 +12,6 @@ const env = Object.assign(process.env, {
   NODE_ENV: 'development',
   BABEL_ENV: 'development'
 });
-debugger;
 (0, _cliWebpack.start)({
   env: env,
   argv: process.argv.slice(2),

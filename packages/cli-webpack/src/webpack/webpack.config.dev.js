@@ -9,12 +9,12 @@ import cssLoader from './cssLoader';
  */
 
 export default async (api) => {
-  if (api.mode !== 'development') return;
+  if (api.mode() !== 'development') return;
 
-  const port = await detectPort(api.argv.port);
+  const port = await detectPort(api.argv().port);
 
   api.chainWebpack((config) => {
-    const { baseURL, proxy } = api.easyConfig;
+    const { baseURL, proxy } = api.easyConfig();
 
     const url = `http://localhost:${port}/${baseURL}`;
     const ipv4 = getIPv4URL(port, baseURL)

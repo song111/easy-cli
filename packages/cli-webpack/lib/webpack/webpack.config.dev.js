@@ -32,7 +32,7 @@ var _default = /*#__PURE__*/function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            if (!(api.mode !== 'development')) {
+            if (!(api.mode() !== 'development')) {
               _context.next = 2;
               break;
             }
@@ -41,14 +41,15 @@ var _default = /*#__PURE__*/function () {
 
           case 2:
             _context.next = 4;
-            return (0, _cliUtils.detectPort)(api.argv.port);
+            return (0, _cliUtils.detectPort)(api.argv().port);
 
           case 4:
             port = _context.sent;
             api.chainWebpack(function (config) {
-              var _api$easyConfig = api.easyConfig,
+              var _api$easyConfig = api.easyConfig(),
                   baseURL = _api$easyConfig.baseURL,
                   proxy = _api$easyConfig.proxy;
+
               var url = "http://localhost:".concat(port, "/").concat(baseURL);
               var ipv4 = (0, _cliUtils.getIPv4URL)(port, baseURL).map(function (url) {
                 return "    ".concat(url);

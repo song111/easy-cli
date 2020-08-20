@@ -1,4 +1,4 @@
-import { DefinePlugin, ProgressPlugin } from 'webpack';
+import { DefinePlugin, ProgressPlugin, IgnorePlugin } from 'webpack';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
@@ -9,11 +9,11 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 export default (api) => {
   api.chainWebpack((config) => {
-    const env = api.env;
-    const { alias, pages = {} } = api.easyConfig;
+    const env = api.env();
+    const { alias, pages = {} } = api.easyConfig();
 
     // 设置context
-    config.context(api.context).target('web');
+    config.context(api.context()).target('web');
 
     // output配置
     config.output.path(api.resolve('build')).publicPath('./');
@@ -22,11 +22,11 @@ export default (api) => {
      * resolve配置
      */
     config.resolve
-      .when(alias, config => {
-      // 路径别名
-        Object.keys(alias).forEach(key => {
-          config.alias.set(key, api.resolve(alias[key]))
-        })
+      .when(alias, (config) => {
+        // 路径别名
+        Object.keys(alias).forEach((key) => {
+          config.alias.set(key, api.resolve(alias[key]));
+        });
       })
       .extensions.merge(['.mjs', '.js', '.jsx', '.json', '.wasm'])
       .end()
@@ -37,8 +37,9 @@ export default (api) => {
       .end()
       .resolveLoader.modules.merge([
         'node_modules',
-        api.resolve('node_modules')
-      ])
+        api.resolve('node_modules'),
+        api.resolve('node_modules/@chrissong/uyun/cli-webpack/node_modules')
+      ]);
 
     /**
      * 设置node变量
@@ -70,19 +71,19 @@ export default (api) => {
     /**
      * eslint配置
      */
-    // config.module
-    //   .rule('eslint')
-    //   .test(/\.jsx?$/)
-    //   .pre()
-    //   .exclude.add(api.resolve('node_modules'))
-    //   .end()
-    //   .use('eslint-loader')
-    //   .loader('eslint-loader')
-    //   .options({
-    //     emitError: false,
-    //     emitWarning: true,
-    //     formatter: 'eslint/lib/cli-engine/formatters/codeframe'
-    //   });
+    config.module
+      .rule('eslint')
+      .test(/\.jsx?$/)
+      .pre()
+      .exclude.add(api.resolve('node_modules'))
+      .end()
+      .use('eslint-loader')
+      .loader('eslint-loader')
+      .options({
+        emitError: false,
+        emitWarning: true,
+        formatter: 'eslint/lib/cli-engine/formatters/codeframe'
+      });
 
     /**
      * babel配置
@@ -163,7 +164,7 @@ export default (api) => {
     /**
      * 区分大小写路径
      */
-    config.plugin('case-sensitive-paths').use(CaseSensitivePathsPlugin);
+    config.plugin('case-sensitive-paths').use(CaseSensitivePathsPlugin).end();
 
     /**
      * 进度条
@@ -174,15 +175,15 @@ export default (api) => {
       }
     ]);
 
-    debugger
-    // config.plugin('html-index').use(HtmlWebpackPlugin, [{
-    //   filename: 'index.html',
-    //   template: api.resolve('./public/index.html'),
-    //   hash: true
-    // }])
-
-    // config.entry('index')
-    //   .add('./src/index.js')
+    /**
+     * 忽略moment locale文件
+     */
+    config.plugin('ignore-moment').use(IgnorePlugin, [
+      {
+        resourceRegExp: /^\.\/locale$/,
+        contextRegExp: /moment$/
+      }
+    ]);
 
     /**
      * 打包入口与html模板
@@ -193,16 +194,28 @@ export default (api) => {
       if (Array.isArray(entry)) {
         entry.forEach((en) => config.entry(key).add(en));
       } else {
-        debugger
         config.entry(key).add(entry);
       }
 
-      debugger
       config.when(template, (config) => {
         config.plugin(`html-${key}`).use(HtmlWebpackPlugin, [
           {
             filename: `${key}.html`,
-            template: api.resolve(template)
+            template: api.resolve(template),
+            templateParameters: (compilation, assets, options) => ({
+              ...env,
+              compilation: compilation,
+              webpack: compilation.getStats().toJson(),
+              webpackConfig: compilation.options,
+              htmlWebpackPlugin: {
+                files: assets,
+                options: options
+              }
+            }),
+            inject: true,
+            chunksSortMode: 'auto',
+            chunks: [key],
+            ...props
           }
         ]);
       });

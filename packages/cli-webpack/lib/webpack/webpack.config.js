@@ -7,11 +7,17 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _webpack = require("webpack");
 
 var _caseSensitivePathsWebpackPlugin = _interopRequireDefault(require("case-sensitive-paths-webpack-plugin"));
 
 var _htmlWebpackPlugin = _interopRequireDefault(require("html-webpack-plugin"));
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 /**
  * webpack通用配置
@@ -19,13 +25,15 @@ var _htmlWebpackPlugin = _interopRequireDefault(require("html-webpack-plugin"));
  */
 var _default = function _default(api) {
   api.chainWebpack(function (config) {
-    var env = api.env;
-    var _api$easyConfig = api.easyConfig,
+    var env = api.env();
+
+    var _api$easyConfig = api.easyConfig(),
         alias = _api$easyConfig.alias,
         _api$easyConfig$pages = _api$easyConfig.pages,
         pages = _api$easyConfig$pages === void 0 ? {} : _api$easyConfig$pages; // 设置context
 
-    config.context(api.context).target('web'); // output配置
+
+    config.context(api.context()).target('web'); // output配置
 
     config.output.path(api.resolve('build')).publicPath('./');
     /**
@@ -37,7 +45,7 @@ var _default = function _default(api) {
       Object.keys(alias).forEach(function (key) {
         config.alias.set(key, api.resolve(alias[key]));
       });
-    }).extensions.merge(['.mjs', '.js', '.jsx', '.json', '.wasm']).end().mainFields.merge(['browser', 'main', 'module']).end().modules.merge(['node_modules', api.resolve('node_modules')]).end().end().resolveLoader.modules.merge(['node_modules', api.resolve('node_modules')]);
+    }).extensions.merge(['.mjs', '.js', '.jsx', '.json', '.wasm']).end().mainFields.merge(['browser', 'main', 'module']).end().modules.merge(['node_modules', api.resolve('node_modules')]).end().end().resolveLoader.modules.merge(['node_modules', api.resolve('node_modules'), api.resolve('node_modules/@chrissong/uyun/cli-webpack/node_modules')]);
     /**
      * 设置node变量
      */
@@ -64,20 +72,12 @@ var _default = function _default(api) {
     /**
      * eslint配置
      */
-    // config.module
-    //   .rule('eslint')
-    //   .test(/\.jsx?$/)
-    //   .pre()
-    //   .exclude.add(api.resolve('node_modules'))
-    //   .end()
-    //   .use('eslint-loader')
-    //   .loader('eslint-loader')
-    //   .options({
-    //     emitError: false,
-    //     emitWarning: true,
-    //     formatter: 'eslint/lib/cli-engine/formatters/codeframe'
-    //   });
 
+    config.module.rule('eslint').test(/\.jsx?$/).pre().exclude.add(api.resolve('node_modules')).end().use('eslint-loader').loader('eslint-loader').options({
+      emitError: false,
+      emitWarning: true,
+      formatter: 'eslint/lib/cli-engine/formatters/codeframe'
+    });
     /**
      * babel配置
      */
@@ -130,7 +130,7 @@ var _default = function _default(api) {
      * 区分大小写路径
      */
 
-    config.plugin('case-sensitive-paths').use(_caseSensitivePathsWebpackPlugin["default"]);
+    config.plugin('case-sensitive-paths').use(_caseSensitivePathsWebpackPlugin["default"]).end();
     /**
      * 进度条
      */
@@ -138,14 +138,14 @@ var _default = function _default(api) {
     config.plugin('progress').use(_webpack.ProgressPlugin, [{
       activeModules: false
     }]);
-    debugger; // config.plugin('html-index').use(HtmlWebpackPlugin, [{
-    //   filename: 'index.html',
-    //   template: api.resolve('./public/index.html'),
-    //   hash: true
-    // }])
-    // config.entry('index')
-    //   .add('./src/index.js')
+    /**
+     * 忽略moment locale文件
+     */
 
+    config.plugin('ignore-moment').use(_webpack.IgnorePlugin, [{
+      resourceRegExp: /^\.\/locale$/,
+      contextRegExp: /moment$/
+    }]);
     /**
      * 打包入口与html模板
      */
@@ -160,16 +160,28 @@ var _default = function _default(api) {
           return config.entry(key).add(en);
         });
       } else {
-        debugger;
         config.entry(key).add(entry);
       }
 
-      debugger;
       config.when(template, function (config) {
-        config.plugin("html-".concat(key)).use(_htmlWebpackPlugin["default"], [{
+        config.plugin("html-".concat(key)).use(_htmlWebpackPlugin["default"], [_objectSpread({
           filename: "".concat(key, ".html"),
-          template: api.resolve(template)
-        }]);
+          template: api.resolve(template),
+          templateParameters: function templateParameters(compilation, assets, options) {
+            return _objectSpread(_objectSpread({}, env), {}, {
+              compilation: compilation,
+              webpack: compilation.getStats().toJson(),
+              webpackConfig: compilation.options,
+              htmlWebpackPlugin: {
+                files: assets,
+                options: options
+              }
+            });
+          },
+          inject: true,
+          chunksSortMode: 'auto',
+          chunks: [key]
+        }, props)]);
       });
     });
     /**************/

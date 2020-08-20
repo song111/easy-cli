@@ -5812,7 +5812,7 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.16, postcss@^7.0.2
 
 preload-webpack-plugin@^2.3.0:
   version "2.3.0"
-  resolved "https://registry.npm.taobao.org/preload-webpack-plugin/download/preload-webpack-plugin-2.3.0.tgz#2923d8caff44dead93d1fe5eaab31f3b18ca0de9"
+  resolved "https://r.cnpmjs.org/preload-webpack-plugin/download/preload-webpack-plugin-2.3.0.tgz#2923d8caff44dead93d1fe5eaab31f3b18ca0de9"
   integrity sha1-KSPYyv9E3q2T0f5eqrMfOxjKDek=
   dependencies:
     object-assign "^4.1.1"
