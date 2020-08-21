@@ -3,10 +3,10 @@ import isWsl from 'is-wsl';
 import hash from 'hash-sum';
 import { NamedChunksPlugin } from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
-import CopyWebpackPlugin from 'copy-webpack-plugin'
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 import postcssSafeParser from 'postcss-safe-parser';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import PreloadWebpackPlugin from 'preload-webpack-plugin'
+import PreloadWebpackPlugin from 'preload-webpack-plugin';
 import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import cssLoader from './cssLoader';
 
@@ -14,7 +14,7 @@ export default (api) => {
   if (api.mode() !== 'production') return;
 
   api.chainWebpack((config) => {
-    const {  pages = {} } = api.easyConfig()
+    const { pages = {} } = api.easyConfig();
     const { sourcemap, report } = api.argv();
 
     cssLoader(config, {
@@ -132,30 +132,30 @@ export default (api) => {
     // /**
     //  * 拷贝public文件夹下的文件
     //  */
-    // config.plugin('copy').use(CopyWebpackPlugin, [
-    //   [
-    //     {
-    //       from: api.resolve('public'),
-    //       to: '.',
-    //       toType: 'dir'
-    //     }
-    //   ]
-    // ]);
+    config.plugin('copy').use(CopyWebpackPlugin, [
+      [
+        {
+          from: api.resolve('public'),
+          to: '.',
+          toType: 'dir'
+        }
+      ]
+    ]);
 
     // /**
     //  * prefetch配置
     //  */
-    // config.when(
-    //   Object.keys(pages).find((key) => pages[key].template),
-    //   (config) => {
-    //     config.plugin('prefetch').use(PreloadWebpackPlugin, [
-    //       {
-    //         rel: 'prefetch',
-    //         include: 'asyncChunks'
-    //       }
-    //     ]);
-    //   }
-    // );
+    config.when(
+      Object.keys(pages).find((key) => pages[key].template),
+      (config) => {
+        config.plugin('prefetch').use(PreloadWebpackPlugin, [
+          {
+            rel: 'prefetch',
+            include: 'asyncChunks'
+          }
+        ]);
+      }
+    );
 
     /**
      * bundle-analyzer插件

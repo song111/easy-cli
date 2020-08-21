@@ -18,8 +18,6 @@ var getEasyConfig = function getEasyConfig(cwd) {
 
   var configPath = _path["default"].resolve(root, './easy.config.js');
 
-  debugger;
-
   if (!_fs["default"].existsSync(configPath)) {
     throw new Error("".concat(root, " \u8DEF\u5F84\u4E0B\u6CA1\u6709 easy.config.js \u914D\u7F6E\u6587\u4EF6"));
   }

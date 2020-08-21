@@ -72,10 +72,11 @@ var API = /*#__PURE__*/function () {
   }, {
     key: "formatOptions",
     value: function formatOptions(options) {
-      var _options$baseURL = options.baseURL,
-          baseURL = _options$baseURL === void 0 ? '' : _options$baseURL,
-          _chainWebpack = options.chainWebpack,
-          easyConfig = (0, _objectWithoutProperties2["default"])(options, ["baseURL", "chainWebpack"]);
+      var _options$easyConfig = options.easyConfig,
+          _options$easyConfig$b = _options$easyConfig.baseURL,
+          baseURL = _options$easyConfig$b === void 0 ? '' : _options$easyConfig$b,
+          _chainWebpack = _options$easyConfig.chainWebpack,
+          easyConfig = (0, _objectWithoutProperties2["default"])(_options$easyConfig, ["baseURL", "chainWebpack"]);
       debugger;
       return _objectSpread(_objectSpread({}, options), {}, {
         easyConfig: _objectSpread(_objectSpread({}, easyConfig), {}, {
@@ -249,7 +250,7 @@ var API = /*#__PURE__*/function () {
   }, {
     key: "version",
     get: function get() {
-      return version;
+      return this.pkg.version;
     }
   }]);
   return API;

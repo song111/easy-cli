@@ -38,7 +38,7 @@ export default (api) => {
       .resolveLoader.modules.merge([
         'node_modules',
         api.resolve('node_modules'),
-        api.resolve('node_modules/@chrissong/uyun/cli-webpack/node_modules')
+        api.resolve('node_modules/@chrissong/cli-webpack/node_modules')
       ]);
 
     /**
@@ -189,8 +189,9 @@ export default (api) => {
      * 打包入口与html模板
      */
     Object.keys(pages).forEach((key) => {
-      const { entry, template } = pages[key];
+      const { entry, template, ...props } = pages[key];
 
+      debugger
       if (Array.isArray(entry)) {
         entry.forEach((en) => config.entry(key).add(en));
       } else {

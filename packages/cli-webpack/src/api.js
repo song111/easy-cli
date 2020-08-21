@@ -1,3 +1,4 @@
+/* eslint-disable space-before-function-paren */
 import path from 'path';
 import WebpackChain from 'webpack-chain';
 import { fs, logger, parallelToSerial } from '@chrissong/cli-utils';
@@ -61,7 +62,7 @@ export default class API {
    * 版本号
    */
   get version() {
-    return version;
+    return this.pkg.version;
   }
 
   /**
@@ -77,7 +78,7 @@ export default class API {
    * @param {Object} options
    */
   formatOptions(options) {
-    const { baseURL = '', chainWebpack, ...easyConfig } = options;
+    const { baseURL = '', chainWebpack, ...easyConfig } = options.easyConfig;
     debugger;
     return {
       ...options,

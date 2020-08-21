@@ -9,6 +9,8 @@ exports["default"] = void 0;
 
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
 
+var _objectWithoutProperties2 = _interopRequireDefault(require("@babel/runtime/helpers/objectWithoutProperties"));
+
 var _webpack = require("webpack");
 
 var _caseSensitivePathsWebpackPlugin = _interopRequireDefault(require("case-sensitive-paths-webpack-plugin"));
@@ -45,7 +47,7 @@ var _default = function _default(api) {
       Object.keys(alias).forEach(function (key) {
         config.alias.set(key, api.resolve(alias[key]));
       });
-    }).extensions.merge(['.mjs', '.js', '.jsx', '.json', '.wasm']).end().mainFields.merge(['browser', 'main', 'module']).end().modules.merge(['node_modules', api.resolve('node_modules')]).end().end().resolveLoader.modules.merge(['node_modules', api.resolve('node_modules'), api.resolve('node_modules/@chrissong/uyun/cli-webpack/node_modules')]);
+    }).extensions.merge(['.mjs', '.js', '.jsx', '.json', '.wasm']).end().mainFields.merge(['browser', 'main', 'module']).end().modules.merge(['node_modules', api.resolve('node_modules')]).end().end().resolveLoader.modules.merge(['node_modules', api.resolve('node_modules'), api.resolve('node_modules/@chrissong/cli-webpack/node_modules')]);
     /**
      * 设置node变量
      */
@@ -153,7 +155,9 @@ var _default = function _default(api) {
     Object.keys(pages).forEach(function (key) {
       var _pages$key = pages[key],
           entry = _pages$key.entry,
-          template = _pages$key.template;
+          template = _pages$key.template,
+          props = (0, _objectWithoutProperties2["default"])(_pages$key, ["entry", "template"]);
+      debugger;
 
       if (Array.isArray(entry)) {
         entry.forEach(function (en) {
