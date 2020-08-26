@@ -11,7 +11,6 @@ const env = Object.assign(process.env, {
   BABEL_ENV: 'development'
 });
 
-
 start({
   env: env,
   argv: process.argv.slice(2),

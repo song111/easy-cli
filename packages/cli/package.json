@@ -36,6 +36,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.3",
+    "@chrissong/cli-utils": "^0.0.1",
+    "@chrissong/cli-webpack": "^0.0.1",
     "chokidar": "^3.4.0",
     "fkill": "^7.0.1",
     "git-clone": "^0.1.0",

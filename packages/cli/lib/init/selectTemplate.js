@@ -73,4 +73,3 @@ const getTemplateBranchByParams = params => {
 };
 
 exports.getTemplateBranchByParams = getTemplateBranchByParams;
-//# sourceMappingURL=selectTemplate.js.map

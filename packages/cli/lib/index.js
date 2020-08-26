@@ -70,9 +70,7 @@ class Cli {
 
   fork(path, argv, options) {
     const subprocess = (0, _child_process.fork)(path, argv, _objectSpread({
-      env: this.env,
-      // 子进程继承当前环境的环境变量
-      execArgv: [`--inspect-brk=127.0.0.1:${process.debugPort + 1}`]
+      env: this.env
     }, options));
     subprocess.on('close', () => {
       const index = this.subprocess.findIndex(item => item === subprocess);
@@ -178,4 +176,3 @@ class Cli {
 
 exports.default = Cli;
 module.exports = exports.default;
-//# sourceMappingURL=index.js.map

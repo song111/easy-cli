@@ -26,4 +26,3 @@ var _default = function _default(cwd) {
 
 exports["default"] = _default;
 module.exports = exports.default;
-//# sourceMappingURL=findRoot.js.map

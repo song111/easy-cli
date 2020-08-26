@@ -63,4 +63,3 @@ var pause = function pause() {
 };
 
 exports.pause = pause;
-//# sourceMappingURL=spinner.js.map

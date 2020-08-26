@@ -82,4 +82,3 @@ function toStartOfLine(stream) {
 }
 
 module.exports = exports.default;
-//# sourceMappingURL=install.js.map

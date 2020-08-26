@@ -26,4 +26,3 @@ var _default = cli => {
 
 exports.default = _default;
 module.exports = exports.default;
-//# sourceMappingURL=index.js.map

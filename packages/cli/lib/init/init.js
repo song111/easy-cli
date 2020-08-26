@@ -67,4 +67,3 @@ async function init(cli, argv) {
 var _default = init;
 exports.default = _default;
 module.exports = exports.default;
-//# sourceMappingURL=init.js.map

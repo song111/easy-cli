@@ -40,4 +40,3 @@ var _default = async (template, projectName, targetDir) => {
 
 exports.default = _default;
 module.exports = exports.default;
-//# sourceMappingURL=generateProject.js.map

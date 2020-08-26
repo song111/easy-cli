@@ -49,4 +49,3 @@ function formatProxy(proxy) {
 }
 
 module.exports = exports.default;
-//# sourceMappingURL=formatProxy.js.map

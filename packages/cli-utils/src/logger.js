@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 
-function format(label, msg) {
+function format (label, msg) {
   return msg
     .split('\n')
     .map((line, i) => (i === 0 ? `${label} ${line}` : line.padStart(chalk.reset(label).length)))

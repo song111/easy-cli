@@ -46,4 +46,3 @@ var _default = function _default(items) {
 
 exports["default"] = _default;
 module.exports = exports.default;
-//# sourceMappingURL=parallelToSerial.js.map

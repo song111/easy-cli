@@ -50,4 +50,3 @@ function _to() {
 }
 
 module.exports = exports.default;
-//# sourceMappingURL=to.js.map

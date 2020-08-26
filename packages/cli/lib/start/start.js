@@ -42,4 +42,3 @@ var _default = (cli, argv) => {
 
 exports.default = _default;
 module.exports = exports.default;
-//# sourceMappingURL=start.js.map

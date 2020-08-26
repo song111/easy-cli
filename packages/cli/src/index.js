@@ -44,7 +44,7 @@ export default class Cli {
   fork (path, argv, options) {
     const subprocess = fork(path, argv, {
       env: this.env, // 子进程继承当前环境的环境变量
-      execArgv: [`--inspect-brk=127.0.0.1:${process.debugPort + 1}`], // 开发模式
+      // execArgv: [`--inspect-brk=127.0.0.1:${process.debugPort + 1}`], // 开发模式
       ...options
     });
 

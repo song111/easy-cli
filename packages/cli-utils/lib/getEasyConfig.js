@@ -28,4 +28,3 @@ var getEasyConfig = function getEasyConfig(cwd) {
 var _default = getEasyConfig;
 exports["default"] = _default;
 module.exports = exports.default;
-//# sourceMappingURL=getEasyConfig.js.map

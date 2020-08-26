@@ -28,4 +28,3 @@ var _default = function _default(port, baseURL) {
 
 exports["default"] = _default;
 module.exports = exports.default;
-//# sourceMappingURL=getIPv4URL.js.map

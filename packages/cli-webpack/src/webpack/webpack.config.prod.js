@@ -133,13 +133,15 @@ export default (api) => {
     //  * 拷贝public文件夹下的文件
     //  */
     config.plugin('copy').use(CopyWebpackPlugin, [
-      [
-        {
-          from: api.resolve('public'),
-          to: '.',
-          toType: 'dir'
-        }
-      ]
+      {
+        patterns: [
+          {
+            from: api.resolve('public'),
+            to: '.',
+            toType: 'dir'
+          }
+        ]
+      }
     ]);
 
     // /**

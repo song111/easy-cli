@@ -46,4 +46,3 @@ var _default = async (repo, branchName) => {
 
 exports.default = _default;
 module.exports = exports.default;
-//# sourceMappingURL=cloneTemplate.js.map

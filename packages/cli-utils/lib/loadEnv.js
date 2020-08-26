@@ -36,4 +36,3 @@ var loadEnv = function loadEnv(cwd) {
 var _default = loadEnv;
 exports["default"] = _default;
 module.exports = exports.default;
-//# sourceMappingURL=loadEnv.js.map

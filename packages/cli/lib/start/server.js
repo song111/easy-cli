@@ -22,4 +22,3 @@ const env = Object.assign(process.env, {
 
   process.send('EXIT_WITH_ERROR');
 });
-//# sourceMappingURL=server.js.map

@@ -142,11 +142,13 @@ var _default = function _default(api) {
     //  * 拷贝public文件夹下的文件
     //  */
 
-    config.plugin('copy').use(_copyWebpackPlugin["default"], [[{
-      from: api.resolve('public'),
-      to: '.',
-      toType: 'dir'
-    }]]); // /**
+    config.plugin('copy').use(_copyWebpackPlugin["default"], [{
+      patterns: [{
+        from: api.resolve('public'),
+        to: '.',
+        toType: 'dir'
+      }]
+    }]); // /**
     //  * prefetch配置
     //  */
 

@@ -23,4 +23,3 @@ var _default = api => {
 
 exports.default = _default;
 module.exports = exports.default;
-//# sourceMappingURL=index.js.map
