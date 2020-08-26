@@ -77,3 +77,4 @@ var _default = (api, options = {}) => {
 
 exports.default = _default;
 module.exports = exports.default;
+//# sourceMappingURL=index.js.map
