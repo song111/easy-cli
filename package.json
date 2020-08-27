@@ -1,5 +1,6 @@
 {
   "name": "root",
+  "private":true,
   "scripts": {
     "dev": "lerna run dev --parallel",
     "build": "lerna run build",
