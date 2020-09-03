@@ -15,10 +15,9 @@ export default class API {
    * }
    * @param {Boolean} inspect 是否为inspect模式
    */
-  constructor(mode, options, inspect) {
+  constructor(mode, options) {
     this.mode = mode;
     this.options = this.formatOptions(options);
-    debugger;
     this.pkg = this.resolvePackage();
     this.plugins = this.resolvePlugins();
   }
@@ -38,7 +37,7 @@ export default class API {
     return {
       ...argv,
       open: argv.open || false,
-      port: argv.port || 8080,
+      port: argv.port || 8000,
       report: argv.report || false,
       sourcemap: argv.sourcemap || false
     };
@@ -79,7 +78,6 @@ export default class API {
    */
   formatOptions(options) {
     const { baseURL = '', chainWebpack, ...easyConfig } = options.easyConfig;
-    debugger;
     return {
       ...options,
       easyConfig: {

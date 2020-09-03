@@ -41,11 +41,10 @@ var API = /*#__PURE__*/function () {
    * }
    * @param {Boolean} inspect 是否为inspect模式
    */
-  function API(mode, options, inspect) {
+  function API(mode, options) {
     (0, _classCallCheck2["default"])(this, API);
     this.mode = mode;
     this.options = this.formatOptions(options);
-    debugger;
     this.pkg = this.resolvePackage();
     this.plugins = this.resolvePlugins();
   }
@@ -77,7 +76,6 @@ var API = /*#__PURE__*/function () {
           baseURL = _options$easyConfig$b === void 0 ? '' : _options$easyConfig$b,
           _chainWebpack = _options$easyConfig.chainWebpack,
           easyConfig = (0, _objectWithoutProperties2["default"])(_options$easyConfig, ["baseURL", "chainWebpack"]);
-      debugger;
       return _objectSpread(_objectSpread({}, options), {}, {
         easyConfig: _objectSpread(_objectSpread({}, easyConfig), {}, {
           baseURL: baseURL.replace(/^\/+|\/+$/g, ''),
@@ -220,7 +218,7 @@ var API = /*#__PURE__*/function () {
       var argv = this.options.argv;
       return _objectSpread(_objectSpread({}, argv), {}, {
         open: argv.open || false,
-        port: argv.port || 8080,
+        port: argv.port || 8000,
         report: argv.report || false,
         sourcemap: argv.sourcemap || false
       });

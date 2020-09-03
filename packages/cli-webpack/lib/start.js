@@ -34,7 +34,6 @@ var start = /*#__PURE__*/function () {
             config = _context.sent;
             return _context.abrupt("return", new Promise(function (resolve, reject) {
               var compiler = (0, _webpack["default"])(config);
-              debugger;
               var server = new _webpackDevServer["default"](compiler, config.devServer);
               server.listen(config.devServer.port, config.devServer.host, function (err) {
                 if (err) return reject(err);

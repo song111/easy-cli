@@ -1,5 +1,5 @@
-import webpack from 'webpack'
-import WebpackDevServer from 'webpack-dev-server'
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
 import { open } from '@chrissong/cli-utils';
 import API from './api';
 
@@ -9,7 +9,6 @@ const start = async (options) => {
 
   return new Promise((resolve, reject) => {
     const compiler = webpack(config);
-    debugger;
     const server = new WebpackDevServer(compiler, config.devServer);
 
     server.listen(config.devServer.port, config.devServer.host, (err) => {

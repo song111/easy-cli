@@ -24,8 +24,9 @@ const start = cli => {
 };
 
 var _default = (cli, argv) => {
-  _cliUtils.logger.log('📦  正在启动开发服务,请稍等...');
+  _cliUtils.logger.log('🚀  正在启动开发服务,请稍等...');
 
+  debugger;
   let startProcess = start(cli); //   监听配置文件的变化
 
   const watcher = _chokidar.default.watch(['.env', '.eslintrc', '.eslintrc.js', '.eslintignore', '.babelrc', 'babel.config.js', '.browserslistrc', 'easy.config.js', 'tsconfig.json'], {
@@ -33,7 +34,7 @@ var _default = (cli, argv) => {
   });
 
   watcher.on('change', async () => {
-    _cliUtils.logger.log('📦  检测到配置文件变化,服务正在自动重启...');
+    _cliUtils.logger.log('🚀  检测到配置文件变化,服务正在自动重启...');
 
     await (0, _fkill.default)(startProcess.pid);
     startProcess = start(cli);

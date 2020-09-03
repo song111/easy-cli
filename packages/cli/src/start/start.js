@@ -14,8 +14,9 @@ const start = (cli) => {
 };
 
 export default (cli, argv) => {
-  logger.log('📦  正在启动开发服务,请稍等...');
+  logger.log('🚀  正在启动开发服务,请稍等...');
 
+  debugger
   let startProcess = start(cli);
 
   //   监听配置文件的变化
@@ -37,7 +38,7 @@ export default (cli, argv) => {
   );
 
   watcher.on('change', async () => {
-    logger.log('📦  检测到配置文件变化,服务正在自动重启...');
+    logger.log('🚀  检测到配置文件变化,服务正在自动重启...');
     await fkill(startProcess.pid);
     startProcess = start(cli);
   });

@@ -36,7 +36,7 @@ export default class Cli {
 
     // 监听主进程关闭后关闭子进程
     const handleExit = (signal) => {
-      logger.done(`接受到信号：${signal} 即将退出程序`);
+      logger.done(`🙋 接受到信号：${signal} 即将退出程序...`);
       // 先退出子进程
       this.subprocess.forEach((subprocess) => {
         if (!subprocess.killed) {

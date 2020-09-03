@@ -50,6 +50,8 @@ var _default = function _default(webpackConfig, _ref) {
     }
 
     var cssLoaderOptions = {
+      modules: true,
+      // 默认开启css module
       sourceMap: sourceMap,
       importLoaders: 2 + (isProd ? 1 : 0) // stylePostLoader injected by vue-loader
 

@@ -24,7 +24,7 @@ export default (webpackConfig, { isProd, sourceMap, filename, chunkFilename, css
     cssnanoOptions.map = { inline: false };
   }
 
-  function createCSSRule (lang, test, loader, options) {
+  function createCSSRule(lang, test, loader, options) {
     const baseRule = webpackConfig.module.rule(lang).test(test);
 
     if (isProd) {
@@ -36,6 +36,7 @@ export default (webpackConfig, { isProd, sourceMap, filename, chunkFilename, css
     }
 
     const cssLoaderOptions = {
+      modules: true, // 默认开启css module
       sourceMap,
       importLoaders: 2 + (isProd ? 1 : 0) // stylePostLoader injected by vue-loader
     };

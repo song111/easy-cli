@@ -871,10 +871,10 @@
     open "^7.0.4"
     ora "^4.0.4"
 
-"@chrissong/cli-webpack@^0.0.2-alpha":
-  version "0.0.2-alpha"
-  resolved "https://registry.yarnpkg.com/@chrissong/cli-webpack/-/cli-webpack-0.0.2-alpha.tgz#856a252b5401ebf9953545825dd142f3fa55de11"
-  integrity sha512-DngrFFyyplVg2m8NO2/dICiLTjupQDhZjaLD6k2NHba0bFgi4LXtTl/OuM+TM8e3MInQ5O8xs3kwn6YZD9OUZA==
+"@chrissong/cli-webpack@^0.0.2-alpha.1":
+  version "0.0.2-alpha.1"
+  resolved "https://registry.yarnpkg.com/@chrissong/cli-webpack/-/cli-webpack-0.0.2-alpha.1.tgz#e498766cc9d3f29fa85ea88c65205df235e0c2eb"
+  integrity sha512-nBsucINfEBw/rIfZWNMeBnK4zsI1gbBycw/YwzmZbsCWNXUUzdvlhkN5SgN8eZAe83xu/rVPWtNm5LM6+X261w==
   dependencies:
     "@babel/core" "^7.10.3"
     "@babel/runtime" "^7.10.3"
@@ -1982,9 +1982,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001109, caniuse-lite@^1.0.30001111:
-  version "1.0.30001122"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001122.tgz#2c8ff631330d986a07a7ba7125cce77a1373b475"
-  integrity sha512-pxjw28CThdrqfz06nJkpAc5SXM404TXB/h5f4UJX+rrXJKE/1bu/KAILc2AY+O6cQIFtRjV9qOR2vaEp9LDGUA==
+  version "1.0.30001123"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001123.tgz#7b981d81382ab2c8fd062f3e6439215e8c503c22"
+  integrity sha512-03dJDoa4YC4332jq0rqwiM+Hw6tA5RJtrnZKvOQy7ASoIUv8CinkcmGhYpCvCjedvkBQrrKnkcELxrUSW/XwNQ==
 
 case-sensitive-paths-webpack-plugin@^2.3.0:
   version "2.3.0"
@@ -2992,9 +2992,9 @@ ejs@^2.6.1:
   integrity sha512-7vmuyh5+kuUyJKePhQfRQBhXV5Ce+RnaeeQArKu1EAMpL3WbgMt5WG6uQZpEVvYSSsxMXRKOewtDk9RaTKXRlA==
 
 electron-to-chromium@^1.3.523:
-  version "1.3.559"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.559.tgz#698e231046e9c7438a42f310373c2d5ba76ea1de"
-  integrity sha512-CQChkWNny3Tp8StVV2t/6Yegl7BwgR3Qk4gJ09lffK87IkHdNBy0exo9CBxAA8Mv6ihwWOuM0Pp0gTQc2Y+NTQ==
+  version "1.3.560"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.560.tgz#6c3f61fe50324770b75705300e9f98f29312ea8d"
+  integrity sha512-0cEFfOA3sNXfSxo0FIClBhrLVSe/QO9LBiqmmYPm3N/IYyt41NRTa2EhvOMWAOKpjd91t/rq062yhnJzfVMKkQ==
 
 elliptic@^6.5.3:
   version "6.5.3"
