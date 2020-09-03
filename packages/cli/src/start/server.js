@@ -1,7 +1,7 @@
-import { start } from 'cli-webpack';
 import yargs from 'yargs';
-import command from './command';
+import { start } from '@chrissong/cli-webpack';
 import { logger, loadEnv, getEasyConfig } from '@chrissong/cli-utils';
+import command from './command';
 
 yargs
   .command(...command, (argv) => {

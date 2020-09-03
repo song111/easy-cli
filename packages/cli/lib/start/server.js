@@ -2,13 +2,13 @@
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
-var _cliWebpack = require("cli-webpack");
-
 var _yargs = _interopRequireDefault(require("yargs"));
 
-var _command = _interopRequireDefault(require("./command"));
+var _cliWebpack = require("@chrissong/cli-webpack");
 
 var _cliUtils = require("@chrissong/cli-utils");
+
+var _command = _interopRequireDefault(require("./command"));
 
 _yargs.default.command(..._command.default, argv => {
   // 先设置环境变量，以便在配置文件中使用
