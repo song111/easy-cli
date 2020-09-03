@@ -79,4 +79,3 @@ var _default = /*#__PURE__*/function () {
 
 exports["default"] = _default;
 module.exports = exports.default;
-//# sourceMappingURL=build.js.map

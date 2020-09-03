@@ -3,14 +3,16 @@ import fs from 'fs';
 import yargs from 'yargs';
 import fkill from 'fkill';
 import { fork } from 'child_process';
+import updateNotifier from 'update-notifier';
 import { logger, findRoot, chalk } from '@chrissong/cli-utils';
+import pkg from '../package'; // clinpm包管理文件
 import init from './init';
 import start from './start';
-import build from './build'
-import lint from './lint'
+import build from './build';
+import lint from './lint';
 
 export default class Cli {
-  constructor (cwd, argv = []) {
+  constructor(cwd, argv = []) {
     this.cwd = cwd;
     this.argv = argv;
     this.plugins = [init, start, build, lint];
@@ -20,18 +22,39 @@ export default class Cli {
   }
 
   // 初始化
-  init () {
+  init() {
     this.root = findRoot(this.cwd);
     this.env = this.getEnv();
     this.pkg = this.resolvePackages();
     this.plugins.forEach((plugin) => this.use(plugin));
+
+    // 检查安装包更新情况
+    updateNotifier({
+      pkg,
+      updateCheckInterval: 1000 * 60 * 60 * 24 * 7
+    }).notify();
+
+    // 监听主进程关闭后关闭子进程
+    const handleExit = (signal) => {
+      logger.done(`接受到信号：${signal} 即将退出程序`);
+      // 先退出子进程
+      this.subprocess.forEach((subprocess) => {
+        if (!subprocess.killed) {
+          subprocess.kill();
+        }
+      });
+
+      process.exit(0);
+    };
+    process.on('SIGINT', handleExit);
+    process.on('SIGTERM', handleExit);
   }
 
   /**
    * 版本信息
    */
 
-  get version () {
+  get version() {
     return this.pkg.version;
   }
 
@@ -41,7 +64,7 @@ export default class Cli {
    * @param  {String[]} argv
    * @param  {Object} options
    */
-  fork (path, argv, options) {
+  fork(path, argv, options) {
     const subprocess = fork(path, argv, {
       env: this.env, // 子进程继承当前环境的环境变量
       // execArgv: [`--inspect-brk=127.0.0.1:${process.debugPort + 1}`], // 开发模式
@@ -61,7 +84,7 @@ export default class Cli {
    * 退出进程
    * @param {Number} code
    **/
-  async exit (code) {
+  async exit(code) {
     const subPIds = this.subprocess.map((subp) => subp.pid);
     await fkill(subPIds, { force: true, tree: true });
     process.exit(code);
@@ -70,7 +93,7 @@ export default class Cli {
   /**
    * 获取当前环境的环境变量
    */
-  getEnv () {
+  getEnv() {
     return Object.keys(process.env).reduce((env, key) => {
       env[key] = process.env[key];
       return env;
@@ -82,15 +105,15 @@ export default class Cli {
    * @param {Function} plugin
    */
 
-  use (plugin) {
+  use(plugin) {
     plugin(this);
   }
 
   /**
    * 获取package.json信息
    */
-  resolvePackages () {
-    const pkg = path.resolve(this.root, 'package.json');
+  resolvePackages() {
+    const pkg = path.resolve(this.root || this.cwd, 'package.json');
     if (!fs.existsSync(pkg)) return {};
     try {
       return require(pkg);
@@ -106,7 +129,7 @@ export default class Cli {
    * @param {String} desc
    * @param  {...any} args
    */
-  register (cmd, desc, ...args) {
+  register(cmd, desc, ...args) {
     const name = cmd.split(/\s+/)[0];
     if (!/^[\w:]+$/.test(name)) {
       // 只能有数字、字母、下划线、冒号组成
@@ -123,7 +146,7 @@ export default class Cli {
    * 解析命令行参数
    * @param {Array} argv
    */
-  parse (argv) {
+  parse(argv) {
     this.argv = argv;
     if (this.argv.length) {
       yargs.parse(this.argv);

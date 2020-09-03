@@ -59,4 +59,3 @@ var start = /*#__PURE__*/function () {
 var _default = start;
 exports["default"] = _default;
 module.exports = exports.default;
-//# sourceMappingURL=start.js.map

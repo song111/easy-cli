@@ -21,4 +21,3 @@ Object.defineProperty(exports, "build", {
 var _start = _interopRequireDefault(require("./start"));
 
 var _build = _interopRequireDefault(require("./build"));
-//# sourceMappingURL=index.js.map

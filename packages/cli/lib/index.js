@@ -19,7 +19,11 @@ var _fkill = _interopRequireDefault(require("fkill"));
 
 var _child_process = require("child_process");
 
+var _updateNotifier = _interopRequireDefault(require("update-notifier"));
+
 var _cliUtils = require("@chrissong/cli-utils");
+
+var _package = _interopRequireDefault(require("../package"));
 
 var _init = _interopRequireDefault(require("./init"));
 
@@ -50,7 +54,27 @@ class Cli {
     this.root = (0, _cliUtils.findRoot)(this.cwd);
     this.env = this.getEnv();
     this.pkg = this.resolvePackages();
-    this.plugins.forEach(plugin => this.use(plugin));
+    this.plugins.forEach(plugin => this.use(plugin)); // 检查安装包更新情况
+
+    (0, _updateNotifier.default)({
+      pkg: _package.default,
+      updateCheckInterval: 1000 * 60 * 60 * 24 * 7
+    }).notify(); // 监听主进程关闭后关闭子进程
+
+    const handleExit = signal => {
+      _cliUtils.logger.done(`接受到信号：${signal} 即将退出程序`); // 先退出子进程
+
+
+      this.subprocess.forEach(subprocess => {
+        if (!subprocess.killed) {
+          subprocess.kill();
+        }
+      });
+      process.exit(0);
+    };
+
+    process.on('SIGINT', handleExit);
+    process.on('SIGTERM', handleExit);
   }
   /**
    * 版本信息
@@ -119,7 +143,7 @@ class Cli {
 
 
   resolvePackages() {
-    const pkg = _path.default.resolve(this.root, 'package.json');
+    const pkg = _path.default.resolve(this.root || this.cwd, 'package.json');
 
     if (!_fs.default.existsSync(pkg)) return {};
 

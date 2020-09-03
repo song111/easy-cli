@@ -16,7 +16,6 @@ export default (cli, argv) => {
     BABEL_ENV: 'production'
   });
 
-  debugger
   build({
     env: env,
     argv: argv,

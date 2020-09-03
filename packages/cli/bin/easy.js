@@ -10,6 +10,7 @@ yargs
   .usage('$0 <命令> [选项]')
   .alias('help', 'h')
   .alias('version', 'v')
+  .wrap(null)
   .fail((msg, err, yargs) => {
     yargs.showHelp();
     logger.error(msg);

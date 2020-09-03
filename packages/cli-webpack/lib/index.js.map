@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/index.js"],"names":[],"mappings":";;;;;;;;;;;;;;;;;;;;AAAA;;AACA","sourcesContent":["import start from './start';\nimport build from './build'\n\nexport { start, build };\n"],"file":"index.js"}

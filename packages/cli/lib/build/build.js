@@ -23,7 +23,6 @@ var _default = (cli, argv) => {
     NODE_ENV: 'production',
     BABEL_ENV: 'production'
   });
-  debugger;
   (0, _cliWebpack.build)({
     env: env,
     argv: argv,
