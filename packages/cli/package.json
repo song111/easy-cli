@@ -1,6 +1,6 @@
 {
   "name": "@chrissong/cli",
-  "version": "0.0.2",
+  "version": "0.0.2-alpha",
   "description": "react cli ",
   "bin": {
     "easy": "bin/easy.js"
@@ -38,8 +38,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.10.3",
-    "@chrissong/cli-utils": "^0.0.1",
-    "@chrissong/cli-webpack": "^0.0.1",
+    "@chrissong/cli-utils": "^0.0.2",
+    "@chrissong/cli-webpack": "^0.0.2-alpha",
     "chokidar": "^3.4.0",
     "fkill": "^7.0.1",
     "git-clone": "^0.1.0",

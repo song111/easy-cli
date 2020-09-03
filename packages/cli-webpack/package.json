@@ -1,6 +1,6 @@
 {
   "name": "@chrissong/cli-webpack",
-  "version": "0.0.2",
+  "version": "0.0.2-alpha",
   "description": "react cli ",
   "main": "lib/index.js",
   "files": [
@@ -36,7 +36,7 @@
   "dependencies": {
     "@babel/core": "^7.10.3",
     "@babel/runtime": "^7.10.3",
-    "@chrissong/cli-utils": "^0.0.1",
+    "@chrissong/cli-utils": "^0.0.2",
     "@intervolga/optimize-cssnano-plugin": "^1.0.6",
     "autoprefixer": "^9.8.4",
     "babel-loader": "^8.1.0",
