@@ -10,6 +10,7 @@ var _cliUtils = require("@chrissong/cli-utils");
 
 var _command = _interopRequireDefault(require("./command"));
 
+// import { start } from '../../../cli-webpack/lib';
 _yargs.default.command(..._command.default, argv => {
   // 先设置环境变量，以便在配置文件中使用
   //  加载环境变量

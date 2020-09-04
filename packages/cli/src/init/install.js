@@ -16,6 +16,7 @@ export default async (pkgManager, targetDir) => {
       cwd: targetDir,
       stdio: ['inherit', 'inherit', 'pipe']
     });
+
     if (pkgManager === 'yarn') {
       child.stderr.on('data', (buf) => {
         const str = buf.toString();
@@ -46,7 +47,7 @@ export default async (pkgManager, targetDir) => {
 };
 
 // 进度读取来自于 vue-cli
-function renderProgressBar (curr, total) {
+function renderProgressBar(curr, total) {
   const ratio = Math.min(Math.max(curr / total, 0), 1);
   const bar = ` ${curr}/${total}`;
   const availableSpace = Math.max(0, process.stderr.columns - bar.length - 3);
@@ -58,7 +59,7 @@ function renderProgressBar (curr, total) {
   process.stderr.write(`[${complete}${incomplete}]${bar}`);
 }
 
-function toStartOfLine (stream) {
+function toStartOfLine(stream) {
   if (!chalk.supportsColor) {
     stream.write('\r');
     return;

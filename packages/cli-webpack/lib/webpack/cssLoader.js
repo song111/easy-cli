@@ -12,8 +12,7 @@ var _miniCssExtractPlugin = _interopRequireWildcard(require("mini-css-extract-pl
 /**
  * @param {*} webpackConfig webpack-chain配置对象
  * @param {*} param
- * themes @uyun/less-plugin-themes 主题数据，不传则不启用插件
- * extract 是否分离css为单独文件
+ * isProd  是否生产环境关联分离css为单独文件
  * sourceMap 是否生成sourceMap
  * filename 生成文件路径
  * chunkFilename  生成文件路径
@@ -39,40 +38,48 @@ var _default = function _default(webpackConfig, _ref) {
   }
 
   function createCSSRule(lang, test, loader, options) {
-    var baseRule = webpackConfig.module.rule(lang).test(test);
+    var baseRule = webpackConfig.module.rule(lang).test(test); // 匹配 *.module.* 样式文件
 
-    if (isProd) {
-      baseRule.use('extract-css-loader').loader(_miniCssExtractPlugin.loader).options({
-        publicPath: cssPublicPath
-      });
-    } else {
-      baseRule.use('style-loader').loader('style-loader');
-    }
+    var extModulesRule = baseRule.oneOf('normal-modules').test(/\.module\.\w+$/);
+    applyLoaders(extModulesRule, true); // 匹配普通样式文件
 
-    var cssLoaderOptions = {
-      modules: true,
-      // 默认开启css module
-      sourceMap: sourceMap,
-      importLoaders: 2 + (isProd ? 1 : 0) // stylePostLoader injected by vue-loader
+    var normalRule = baseRule.oneOf('normal');
+    applyLoaders(normalRule, false);
 
-    };
-    baseRule.use('css-loader').loader('css-loader').options(cssLoaderOptions);
+    function applyLoaders(rule, modules) {
+      if (isProd) {
+        rule.use('extract-css-loader').loader(_miniCssExtractPlugin.loader).options({
+          publicPath: cssPublicPath
+        });
+      } else {
+        rule.use('style-loader').loader('style-loader');
+      }
 
-    if (isProd) {
-      baseRule.use('cssnano').loader('postcss-loader').options({
+      var cssLoaderOptions = {
+        modules: modules,
+        // 开启css module
         sourceMap: sourceMap,
-        plugins: [require('cssnano')(cssnanoOptions)]
-      });
-    }
+        importLoaders: 2 + (isProd ? 1 : 0) // stylePostLoader injected by vue-loader
 
-    baseRule.use('postcss-loader').loader('postcss-loader').options({
-      sourceMap: sourceMap
-    });
+      };
+      rule.use('css-loader').loader('css-loader').options(cssLoaderOptions);
 
-    if (loader) {
-      baseRule.use(loader).loader(loader).options(Object.assign({
+      if (isProd) {
+        rule.use('cssnano').loader('postcss-loader').options({
+          sourceMap: sourceMap,
+          plugins: [require('cssnano')(cssnanoOptions)]
+        });
+      }
+
+      rule.use('postcss-loader').loader('postcss-loader').options({
         sourceMap: sourceMap
-      }, options));
+      });
+
+      if (loader) {
+        rule.use(loader).loader(loader).options(Object.assign({
+          sourceMap: sourceMap
+        }, options));
+      }
     }
   }
 

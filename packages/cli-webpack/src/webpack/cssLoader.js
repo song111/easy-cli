@@ -3,8 +3,7 @@ import MiniCssExtractPlugin, { loader as extractLoader } from 'mini-css-extract-
 /**
  * @param {*} webpackConfig webpack-chain配置对象
  * @param {*} param
- * themes @uyun/less-plugin-themes 主题数据，不传则不启用插件
- * extract 是否分离css为单独文件
+ * isProd  是否生产环境关联分离css为单独文件
  * sourceMap 是否生成sourceMap
  * filename 生成文件路径
  * chunkFilename  生成文件路径
@@ -26,37 +25,46 @@ export default (webpackConfig, { isProd, sourceMap, filename, chunkFilename, css
 
   function createCSSRule(lang, test, loader, options) {
     const baseRule = webpackConfig.module.rule(lang).test(test);
+    // 匹配 *.module.* 样式文件
+    const extModulesRule = baseRule.oneOf('normal-modules').test(/\.module\.\w+$/);
+    applyLoaders(extModulesRule, true);
 
-    if (isProd) {
-      baseRule.use('extract-css-loader').loader(extractLoader).options({
-        publicPath: cssPublicPath
-      });
-    } else {
-      baseRule.use('style-loader').loader('style-loader');
-    }
+    // 匹配普通样式文件
+    const normalRule = baseRule.oneOf('normal');
+    applyLoaders(normalRule, false);
 
-    const cssLoaderOptions = {
-      modules: true, // 默认开启css module
-      sourceMap,
-      importLoaders: 2 + (isProd ? 1 : 0) // stylePostLoader injected by vue-loader
-    };
-
-    baseRule.use('css-loader').loader('css-loader').options(cssLoaderOptions);
-
-    if (isProd) {
-      baseRule
-        .use('cssnano')
-        .loader('postcss-loader')
-        .options({
-          sourceMap,
-          plugins: [require('cssnano')(cssnanoOptions)]
+    function applyLoaders(rule, modules) {
+      if (isProd) {
+        rule.use('extract-css-loader').loader(extractLoader).options({
+          publicPath: cssPublicPath
         });
-    }
+      } else {
+        rule.use('style-loader').loader('style-loader');
+      }
 
-    baseRule.use('postcss-loader').loader('postcss-loader').options({ sourceMap });
+      const cssLoaderOptions = {
+        modules, // 开启css module
+        sourceMap,
+        importLoaders: 2 + (isProd ? 1 : 0) // stylePostLoader injected by vue-loader
+      };
 
-    if (loader) {
-      baseRule.use(loader).loader(loader).options(Object.assign({ sourceMap }, options));
+      rule.use('css-loader').loader('css-loader').options(cssLoaderOptions);
+
+      if (isProd) {
+        rule
+          .use('cssnano')
+          .loader('postcss-loader')
+          .options({
+            sourceMap,
+            plugins: [require('cssnano')(cssnanoOptions)]
+          });
+      }
+
+      rule.use('postcss-loader').loader('postcss-loader').options({ sourceMap });
+
+      if (loader) {
+        rule.use(loader).loader(loader).options(Object.assign({ sourceMap }, options));
+      }
     }
   }
 

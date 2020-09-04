@@ -15,13 +15,13 @@ var _which = _interopRequireDefault(require("which"));
 
 var _cliUtils = require("@chrissong/cli-utils");
 
+var _selectTemplate = require("./selectTemplate");
+
 var _cloneTemplate = _interopRequireDefault(require("./cloneTemplate"));
 
 var _generateProject = _interopRequireDefault(require("./generateProject"));
 
 var _install = _interopRequireDefault(require("./install"));
-
-var _selectTemplate = require("./selectTemplate");
 
 /**
  * 项目初始化
@@ -51,9 +51,9 @@ async function init(cli, argv) {
   } // 创建本地文件模板
 
 
-  const templateParams = await (0, _selectTemplate.getTemplateQues)();
-  const templateBranch = (0, _selectTemplate.getTemplateBranchByParams)(templateParams);
-  const projectTmpdir = await (0, _cloneTemplate.default)(_selectTemplate.templateRepo, templateBranch); //  模版临时文件地址
+  const templateParams = await (0, _selectTemplate.getTemplateParams)();
+  debugger;
+  const projectTmpdir = await (0, _cloneTemplate.default)(templateParams); //  模版临时文件地址
   // 生成项目
 
   await (0, _generateProject.default)(projectTmpdir, argv.name, targetDir);

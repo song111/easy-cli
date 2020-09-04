@@ -871,10 +871,10 @@
     open "^7.0.4"
     ora "^4.0.4"
 
-"@chrissong/cli-webpack@^0.0.2-alpha.1":
-  version "0.0.2-alpha.1"
-  resolved "https://registry.yarnpkg.com/@chrissong/cli-webpack/-/cli-webpack-0.0.2-alpha.1.tgz#e498766cc9d3f29fa85ea88c65205df235e0c2eb"
-  integrity sha512-nBsucINfEBw/rIfZWNMeBnK4zsI1gbBycw/YwzmZbsCWNXUUzdvlhkN5SgN8eZAe83xu/rVPWtNm5LM6+X261w==
+"@chrissong/cli-webpack@0.0.2-alpha.2":
+  version "0.0.2-alpha.2"
+  resolved "https://registry.yarnpkg.com/@chrissong/cli-webpack/-/cli-webpack-0.0.2-alpha.2.tgz#6353106b37e7d162750dd1fb6a5aaef32227308f"
+  integrity sha512-oRQUPD1YPXcFqrXdKJXKGwfpfOYxWD/baO9f8O7CieF/c/criAq2lvFCzlrB3OqENDktiacCC/i5Kl+eh48Vbw==
   dependencies:
     "@babel/core" "^7.10.3"
     "@babel/runtime" "^7.10.3"
