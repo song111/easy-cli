@@ -3,6 +3,7 @@ import fs from 'fs-extra';
 import execa from 'execa';
 import open from 'open';
 import detectPort from 'detect-port';
+import os from 'os';
 
 import logger from './logger';
 import findRoot from './findRoot';
@@ -13,9 +14,12 @@ import getEasyConfig from './getEasyConfig';
 import parallelToSerial from './parallelToSerial';
 import getIPv4URL from './getIPv4URL';
 import formatProxy from './formatProxy';
-import dotenv from './dotenv'
+import dotenv from './dotenv';
+import * as joiSchema from './joiSchema';
+import hasMultipleCores from './hasMultipleCores';
 
 export {
+  os,
   logger,
   findRoot,
   chalk,
@@ -30,5 +34,7 @@ export {
   detectPort,
   getIPv4URL,
   formatProxy,
-  dotenv
+  dotenv,
+  joiSchema,
+  hasMultipleCores
 };

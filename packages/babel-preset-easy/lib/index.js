@@ -29,7 +29,7 @@ function configBabel(configs, plugin, opts, defaultOpts) {
 }
 
 var _default = (api, options = {}) => {
-  api.assertVersion(7);
+  // api.assertVersion(7)
   const {
     '@babel/preset-env': babelPresetEnvOpts,
     '@babel/preset-react': babelPresetReactOpts,
@@ -77,3 +77,4 @@ var _default = (api, options = {}) => {
 
 exports.default = _default;
 module.exports = exports.default;
+//# sourceMappingURL=index.js.map

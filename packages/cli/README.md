@@ -5,6 +5,8 @@
 ## 完整配置
 
 ```js
+const { CheckerPlugin } = require('awesome-typescript-loader');
+
 module.exports = {
   pages: {
     index: {
@@ -17,9 +19,19 @@ module.exports = {
     public: './public',
     src: './src'
   },
-  proxy: {
-      
+  chainWebpack: (config) => {
+    config.resolve.extensions.add('.ts').add('.tsx');
+
+    config.module
+      .rule('typecript')
+      .test(/\.tsx?$/)
+      .use('awesome-typescript-loader')
+      .loader('awesome-typescript-loader');
+
+    config.plugin('typescript').use(CheckerPlugin);
   },
-  chainWebpack: (config) => {}
+  proxy: {
+    
+  }
 };
 ```

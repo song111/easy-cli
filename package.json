@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "private":true,
+  "private": true,
   "scripts": {
     "dev": "lerna run dev --parallel",
     "build": "lerna run build",
@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "git-clone": "^0.1.0",
+    "joi": "^17.2.1",
     "os": "^0.1.1"
   }
 }

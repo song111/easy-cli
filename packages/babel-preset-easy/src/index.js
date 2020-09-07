@@ -14,7 +14,7 @@ function configBabel (configs, plugin, opts, defaultOpts) {
 }
 
 export default (api, options = {}) => {
-  api.assertVersion(7)
+  // api.assertVersion(7)
 
   const {
     '@babel/preset-env': babelPresetEnvOpts,
